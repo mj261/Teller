@@ -48,8 +48,8 @@ def system_admin():
     print("###              Welcome System Admin             ###")
     print("###                                               ###")
     print("#####################################################\n\n")
-    admin_username = input("Please enter your teller number:  ")
-    admin_password = input("Please enter your teller number:  ")
+    admin_username = input("Please enter your username:  ")
+    admin_password = input("Please enter your password:  ")
 
 
 def user():
@@ -58,5 +58,5 @@ def user():
     print("###                 Welcome User                  ###")
     print("###                                               ###")
     print("#####################################################\n\n")
-    user_username = input("Please enter your teller number:  ")
-    user_password = input("Please enter your teller number:  ")
+    user_username = input("Please enter your username:  ")
+    user_password = input("Please enter your password:  ")
