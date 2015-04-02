@@ -63,7 +63,7 @@ def user():
     print("###                                               ###")
     print("#####################################################\n\n")
     user_selection = ''
-    while user_selection != 'y' or 'n':
+    while user_selection != 'y' and user_selection != 'n':
         print("Are you a new user?")
         user_selection = raw_input("(Y)es or (N)o? ").strip().lower()
         if user_selection == 'y':
