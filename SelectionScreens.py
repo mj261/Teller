@@ -43,7 +43,7 @@ def bank_teller():
         teller_selection = raw_input("Please enter your teller number:  ")
         login_status = login.teller_login(teller_selection)
     if login_status == 1:
-        print "Teller Logged in"
+        teller_home()
 
 
 def system_admin():
@@ -62,26 +62,55 @@ def user():
     print("###                 Welcome User                  ###")
     print("###                                               ###")
     print("#####################################################\n\n")
-    print("Are you a new user?")
-    user_selection = raw_input("yes or no? ")
-    if user_selection == 'yes':
-        new_user()
-    elif user_selection == 'no':
-        old_user()
+    user_selection = ''
+    while user_selection != 'y' or 'n':
+        print("Are you a new user?")
+        user_selection = raw_input("(Y)es or (N)o? ").strip().lower()
+        if user_selection == 'y':
+            new_user()
+        elif user_selection == 'n':
+            old_user()
 
 
 def new_user():
     print("Welcome New User!")
-    username = raw_input("Please select your username: ")
+    username = ''
+    email = ''
+    email_check = 1
+    username_check = 1
+    name = raw_input("Please enter your name: ")
+    while email_check != 0:
+        email = raw_input("Please enter your email address: ")
+        email_check = login.check_email(email)
+        if email_check == 1:
+            print "Email Address is in use. You already have an account!"
+    while username_check != 0:
+        username = raw_input("Please select your username: ")
+        username_check = login.check_username(username)
+        if username_check == 1:
+            print "Username is in use.  Please select another!"
     password = raw_input("Please select your password: ")
-    password_check(password)
-    user_username = username
-    user_password = password
+
+    password = password_check(password)
+    success = login.create_user(username, password, email, name)
+    if success == 1:
+        user_home()
+    else:
+        print("There was an error! Please try again.")
+        home_screen()
 
 
 def old_user():
     user_username = raw_input("Please enter your username:  ")
     user_password = raw_input("Please enter your password:  ")
+
+
+def teller_home():
+    print "Teller Home Screen"
+
+
+def user_home():
+    print "User Home Screen"
 
 
 def password_check(password):
@@ -96,3 +125,4 @@ def password_check(password):
         print("Password saved")
         print(encode)
         print(decode)
+        return encode
