@@ -1,5 +1,5 @@
 # coding=utf-8
-
+import login
 
 def home_screen():
     print("#####################################################")
@@ -29,12 +29,34 @@ def home_screen():
 
 
 def bank_teller():
-    print "Bank Teller Screen"
+    print("\n\n#####################################################")
+    print("###                                               ###")
+    print("###              Welcome Bank Teller              ###")
+    print("###                                               ###")
+    print("#####################################################\n\n")
+    login_status = 0
+    while login_status != 1:
+        teller_selection = input("Please enter your teller number:  ")
+        login_status = login.teller_login(teller_selection)
+    if login_status == 1:
+        print "Teller Logged in"
 
 
 def system_admin():
-    print "Admin"
+    print("\n\n#####################################################")
+    print("###                                               ###")
+    print("###              Welcome System Admin             ###")
+    print("###                                               ###")
+    print("#####################################################\n\n")
+    admin_username = input("Please enter your teller number:  ")
+    admin_password = input("Please enter your teller number:  ")
 
 
 def user():
-    print "User"
+    print("\n\n#####################################################")
+    print("###                                               ###")
+    print("###                 Welcome User                  ###")
+    print("###                                               ###")
+    print("#####################################################\n\n")
+    user_username = input("Please enter your teller number:  ")
+    user_password = input("Please enter your teller number:  ")

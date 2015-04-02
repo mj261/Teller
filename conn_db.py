@@ -17,5 +17,5 @@ def connect():
 
 def close_connection(conn):
     conn.close()
-    if not conn.is_connected():
-        print ("Connection Closed")
+    # if not conn.is_connected():
+    #     print ("Connection Closed")
