@@ -14,13 +14,15 @@ def home_screen():
     print("#####################################################")
 
     selection = 0
-    while selection != 1 and selection != 2 and selection != 3:
+    while selection != 1 and selection != 2 and selection != 3 and selection != "quit" and selection != "exit":
         print("Please select from the following options:\n\n")
         print("1. User")
         print("2. Bank Teller")
         print("3. System Administrator\n\n")
-        selection = raw_input("Please enter your selection:  ")
-        if selection != 1 and selection != 2 and selection != 3:
+        selection = raw_input("Please enter your selection:  ").lower()
+        if selection != "quit" and selection != "exit":
+            selection = int(selection)
+        if selection != 1 and selection != 2 and selection != 3 and selection != "quit" and selection != "exit":
             print("\n\n#####################################################")
             print("###                                               ###")
             print("###         YOU ENTERED AN INVALID OPTION!        ###")
