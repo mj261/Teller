@@ -1,5 +1,6 @@
 # coding=utf-8
 import login
+import base64
 
 def home_screen():
     print("#####################################################")
@@ -58,5 +59,37 @@ def user():
     print("###                 Welcome User                  ###")
     print("###                                               ###")
     print("#####################################################\n\n")
-    user_username = input("Please enter your username:  ")
-    user_password = input("Please enter your password:  ")
+    print("Are you a new user?")
+    userSelection = raw_input("yes or no? ")
+    if userSelection == 'yes':
+	    newUser()
+    elif userSelection == 'no':
+	    oldUser()
+   
+	
+def newUser():
+	print("Welcome New User!")
+	userName = raw_input("Please select your username: ")
+	password = raw_input("Please select your password: ")
+	passwordCheck(password)
+	user_username = userName
+	user_password = password 
+	
+def oldUser():
+	user_username = raw_input("Please enter your username:  ")
+	user_password = raw_input("Please enter your password:  ")
+	
+def passwordCheck(password):
+	if len(password) < 6:
+		print("Passwords need to be at least 6 long")
+		password = raw_input("Please enter again: ")
+		passwordCheck(password)
+	else:
+		#A way to encode/ decode passwords, I just put both in there to look at. 
+		encode = base64.b64encode(password)
+		decode = base64.b64decode(encode)
+		print("Password saved")
+		print(encode)
+		print(decode)
+	
+	
