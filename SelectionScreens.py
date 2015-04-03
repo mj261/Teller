@@ -1,6 +1,8 @@
 # coding=utf-8
 import login
 import base64
+import math
+import transactions
 
 
 def home_screen():
@@ -38,12 +40,13 @@ def bank_teller():
     print("###              Welcome Bank Teller              ###")
     print("###                                               ###")
     print("#####################################################\n\n")
-    login_status = 0
-    while login_status != 1:
-        teller_selection = raw_input("Please enter your teller number:  ")
-        login_status = login.teller_login(teller_selection)
-    if login_status == 1:
-        teller_home()
+    teller_name = ''
+    teller_number = ''
+    while teller_name == '':
+        teller_number = raw_input("Please enter your teller number:  ")
+        teller_name = login.teller_login(teller_number)
+    if teller_name != '':
+        teller_home(teller_name, teller_number)
 
 
 def system_admin():
@@ -105,8 +108,47 @@ def old_user():
     user_password = raw_input("Please enter your password:  ")
 
 
-def teller_home():
-    print "Teller Home Screen"
+def teller_home(teller_name, teller_number):
+    before_name = math.ceil((40-len(teller_name))/2)
+    after_name = math.floor((39-len(teller_name))/2)
+    before = ''
+    after = ''
+    while before_name > 0:
+        before += ' '
+        before_name -= 1
+    while after_name > 0:
+        after += ' '
+        after_name -= 1
+
+    print("\n\n#####################################################")
+    print("###                                               ###")
+    print("###{0}Welcome {1}{2}###".format(before, teller_name, after))
+    print("###                                               ###")
+    print("#####################################################\n\n")
+
+    selection = 0
+    while selection != 1 and selection != 2 and selection != 3 and selection != 4:
+        print("Please select from the following options:\n\n")
+        print("1. View Account")
+        print("2. Withdrawal")
+        print("3. Deposit")
+        print("4. Transfer\n\n")
+        selection = int(raw_input("Please enter your selection:  ").strip())
+        if selection != 1 and selection != 2 and selection != 3 and selection !=4:
+            print("\n\n#####################################################")
+            print("###                                               ###")
+            print("###         YOU ENTERED AN INVALID OPTION!        ###")
+            print("###                                               ###")
+            print("#####################################################\n\n")
+        else:
+            if selection == 1:
+                view_funds_screen(teller_name, teller_number)
+            elif selection == 2:
+                withdrawal_screen(teller_name, teller_number)
+            elif selection == 3:
+                deposit_screen(teller_name, teller_number)
+            elif selection == 4:
+                transfer_screen(teller_name, teller_number)
 
 
 def user_home():
@@ -126,3 +168,49 @@ def password_check(password):
         print(encode)
         print(decode)
         return encode
+
+
+def view_funds_screen(teller_name, teller_number):
+    print("\n\n#####################################################")
+    print("###                                               ###")
+    print("###                 View Account                  ###")
+    print("###                                               ###")
+    print("#####################################################\n\n")
+    acct_exists = 1
+    acct_number = int(raw_input("Please enter an account number:  ").strip())
+    acct_exists = transactions.valid_account(acct_number)
+    while acct_exists == 0:
+        print("That is not a valid account number!")
+        acct_number = int(raw_input("Please enter an account number:  ").strip())
+        acct_exists = transactions.valid_account(acct_number)
+    balance = transactions.compute_balance(acct_number)
+    print("Account Number: {0} has a balance of ${1:.2f}".format(acct_number, balance))
+    go_home = raw_input("Press <enter> to continue")
+    if 'go_home' in locals():
+        teller_home(teller_name, teller_number)
+    else:
+        print "error"
+
+
+def withdrawal_screen(teller_name, teller_number):
+    print("\n\n#####################################################")
+    print("###                                               ###")
+    print("###                Withdraw Funds                 ###")
+    print("###                                               ###")
+    print("#####################################################\n\n")
+
+
+def deposit_screen(teller_name, teller_number):
+    print("\n\n#####################################################")
+    print("###                                               ###")
+    print("###                 Deposit Funds                 ###")
+    print("###                                               ###")
+    print("#####################################################\n\n")
+
+
+def transfer_screen(teller_name, teller_number):
+    print("\n\n#####################################################")
+    print("###                                               ###")
+    print("###                Transfer Funds                 ###")
+    print("###                                               ###")
+    print("#####################################################\n\n")

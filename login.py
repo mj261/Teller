@@ -3,16 +3,16 @@ import conn_db
 
 
 def teller_login(teller_number):
-    teller_login_status = 0
+    teller_name = ''
     conn = conn_db.connect()
     c = conn.cursor()
-    query = """SELECT EXISTS(SELECT * FROM Tellers WHERE Code = '{0}') AS Does_Exist""".format(teller_number)
+    query = """SELECT Name FROM Tellers WHERE Code = '{0}'""".format(teller_number)
     c.execute(query)
-    for (Does_Exist) in c:
-        teller_login_status = Does_Exist
+    for (Name) in c:
+        teller_name = Name
     conn_db.close_connection(conn)
-    teller_login_status = int(''.join(map(str, teller_login_status)))
-    return teller_login_status
+    teller_name = ''.join(map(str, teller_name))
+    return teller_name
 
 
 def create_user(username, password, email, name):
