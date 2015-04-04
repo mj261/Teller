@@ -4,17 +4,10 @@ class commandLine(threading.Thread):
         threading.Thread.__init__(self)
         self.threadID = threadID
         self.counter = 0
-		
-		
-	#list functions that can ben executed here
-	
-	#end functions
-      
-    def run(self):
-        input = ""		
-        
-		#match input to function list and call appropriate functions
+        #list functions that can ben executed here
+        #end functions
 
-			
-			
-			
+
+    def run(self):
+        input = ""
+        #match input to function list and call appropriate functions
