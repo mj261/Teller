@@ -15,7 +15,7 @@ def connect():
             'host': 'ec2-52-4-116-111.compute-1.amazonaws.com',
             'database': 'BankTeller',
             'client_flags': [ClientFlag.SSL],
-            'ssl_ca': 'ca.pem',
+            'ssl_ca': '',
             'ssl_cert': 'client-cert.pem',
             'ssl_key': 'client-key.pem',
         }
