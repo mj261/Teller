@@ -176,9 +176,9 @@ def admin_home(admin_username, admin_name, currency):
             and selection != 5 and selection != 6:
         print "Please select from the following options:\n\n"
         print "1. View Account"
-        print "2. Withdrawal"
-        print "3. Deposit"
-        print "4. Transfer"
+        print "2. Modify Account"
+        print "3. Create Teller"
+        print "4. Create Admin"
         if currency == 'usd':
             print "5. Use Euro Currency"
         else:
@@ -194,23 +194,23 @@ def admin_home(admin_username, admin_name, currency):
             print "###         YOU ENTERED AN INVALID OPTION!        ###"
             print "###                                               ###"
             print "#####################################################\n\n"
-        # else:
-        #     if selection == 1:
-        #         view_funds_screen(teller_name, teller_number, currency)
+        else:
+            if selection == 1:
+                view_funds_screen(admin_username, admin_name, currency, 'Admin')
         #     elif selection == 2:
         #         withdrawal_screen(teller_name, teller_number, currency)
         #     elif selection == 3:
         #         deposit_screen(teller_name, teller_number, currency)
         #     elif selection == 4:
         #         transfer_screen(teller_name, teller_number, currency)
-        #     elif selection == 5:
-        #         if currency == 'usd':
-        #             currency = 'eur'
-        #         else:
-        #             currency = 'usd'
-        #         teller_home(teller_name, teller_number, currency)
-        #     elif selection == 6:
-        #         home_screen()
+            elif selection == 5:
+                if currency == 'usd':
+                    currency = 'eur'
+                else:
+                    currency = 'usd'
+                admin_home(admin_username, admin_name, currency)
+            elif selection == 6:
+                home_screen()
 
 
 def teller_home(teller_name, teller_number, currency):
@@ -257,7 +257,7 @@ def teller_home(teller_name, teller_number, currency):
             print "#####################################################\n\n"
         else:
             if selection == 1:
-                view_funds_screen(teller_name, teller_number, currency)
+                view_funds_screen(teller_name, teller_number, currency, 'Teller')
             elif selection == 2:
                 withdrawal_screen(teller_name, teller_number, currency)
             elif selection == 3:
@@ -295,7 +295,7 @@ def password_check(password):
         return encode
 
 
-def view_funds_screen(teller_name, teller_number, currency):
+def view_funds_screen(teller_name, teller_number, currency, user):
     """View account for tellers"""
     print "\n\n#####################################################"
     print "###                                               ###"
@@ -346,7 +346,10 @@ def view_funds_screen(teller_name, teller_number, currency):
     else:
         print "None"
     raw_input("\n\nPress <enter> to continue")
-    teller_home(teller_name, teller_number, currency)
+    if user == 'Teller':
+        teller_home(teller_name, teller_number, currency)
+    elif user == 'Admin':
+        admin_home(teller_name, teller_number, currency)
 
 
 def withdrawal_screen(teller_name, teller_number, currency):
