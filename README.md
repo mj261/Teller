@@ -1,4 +1,4 @@
-# Teller 
+# Bank Teller 
 
 You will need to install the following plugins: mysql-connector-python
 

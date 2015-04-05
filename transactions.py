@@ -2,6 +2,8 @@
 """Database Transactions"""
 import conn_db
 import time
+import json
+import urllib2
 
 
 def compute_balance(acct_number):
@@ -103,3 +105,26 @@ def deposit(acct_number, amount):
         .format(acct_number, amount, epoch)
     cursor.execute(query)
     conn_db.close_connection(conn)
+
+
+def currency_converter(currency_from, currency_to, currency_input):
+    """Convert Currency"""
+    yql_base_url = "https://query.yahooapis.com/v1/public/yql"
+    yql_query = 'select%20*%20from%20yahoo.finance.xchange%20where%20pair%20in%20("'\
+        + currency_from + currency_to+'")'
+    yql_query_url = yql_base_url + "?q=" + yql_query + \
+        "&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys"
+    try:
+        yql_response = urllib2.urlopen(yql_query_url)
+        try:
+            yql_json = json.loads(yql_response.read())
+            currency_output = currency_input * float(yql_json['query']['results']['rate']['Rate'])
+            return currency_output
+        except (ValueError, KeyError, TypeError):
+            return "JSON format error"
+
+    except IOError, error:
+        if hasattr(error, 'code'):
+            return error.code
+        elif hasattr(error, 'reason'):
+            return error.reason
