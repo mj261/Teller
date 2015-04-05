@@ -32,6 +32,19 @@ def user_login(username, password):
     print "User Logged in"
 
 
+def admin_login(username, password):
+    admin_name = ''
+    conn = conn_db.connect()
+    cursor = conn.cursor()
+    query = """SELECT Name FROM Admins WHERE Username = '{0}' and Password = '{1}'""".format(username, password)
+    cursor.execute(query)
+    for name in cursor:
+        admin_name = name
+    conn_db.close_connection(conn)
+    admin_name = ''.join(map(str, admin_name))
+    return admin_name
+
+
 def check_email(email):
     """Check if email exists"""
     present = 0

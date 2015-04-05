@@ -7,6 +7,7 @@ import math
 import transactions
 import sys
 import re
+import getpass
 
 
 def home_screen():
@@ -75,7 +76,28 @@ def system_admin():
     print "###                                               ###"
     print "#####################################################\n\n"
     admin_username = raw_input("Please enter your username:  ")
-    admin_password = raw_input("Please enter your password:  ")
+    admin_password = getpass.getpass("Please enter your password:  ")
+    while admin_username == '' or admin_password == '' or not admin_username.isalnum() or not admin_password.isalnum():
+        print "\nYou must enter a valid username and password!\n"
+        admin_username = raw_input("Please enter your username:  ")
+        admin_password = getpass.getpass("Please enter your password:  ")
+    admin_password = base64.b64encode(admin_password)
+    admin_name = login.admin_login(admin_username, admin_password)
+    while admin_name == '':
+        print "\n\n#####################################################"
+        print "###                                               ###"
+        print "###                Invalid Login!                 ###"
+        print "###                                               ###"
+        print "#####################################################\n\n"
+        admin_username = raw_input("Please enter your username:  ")
+        admin_password = getpass.getpass("Please enter your password:  ")
+        while admin_username == '' or admin_password == '' or not admin_username.isalnum() or not admin_password.isalnum():
+            print "\nYou must enter a username and password!\n"
+            admin_username = raw_input("Please enter your username:  ")
+            admin_password = getpass.getpass("Please enter your password:  ")
+        admin_password = base64.b64encode(admin_password)
+        admin_name = login.admin_login(admin_username, admin_password)
+    admin_home(admin_username, admin_name, 'usd')
 
 
 def user():
@@ -128,6 +150,67 @@ def old_user():
     """Screen for old users"""
     user_username = raw_input("Please enter your username:  ")
     user_password = raw_input("Please enter your password:  ")
+
+
+def admin_home(admin_username, admin_name, currency):
+    """Home page for system admin after login"""
+    before_name = math.ceil((40-len(admin_name))/2)
+    after_name = math.floor((39-len(admin_name))/2)
+    before = ''
+    after = ''
+    while before_name > 0:
+        before += ' '
+        before_name -= 1
+    while after_name > 0:
+        after += ' '
+        after_name -= 1
+
+    print "\n\n#####################################################"
+    print "###                                               ###"
+    print "###{0}Welcome {1}{2}###".format(before, admin_name, after)
+    print "###                                               ###"
+    print "#####################################################\n\n"
+
+    selection = 0
+    while selection != 1 and selection != 2 and selection != 3 and selection != 4 \
+            and selection != 5 and selection != 6:
+        print "Please select from the following options:\n\n"
+        print "1. View Account"
+        print "2. Withdrawal"
+        print "3. Deposit"
+        print "4. Transfer"
+        if currency == 'usd':
+            print "5. Use Euro Currency"
+        else:
+            print "5. Use USD Currency"
+        print "6. Logout\n\n"
+        selection = raw_input("Please enter your selection:  ").strip()
+        if selection.isdigit():
+            selection = int(selection)
+        if selection != 1 and selection != 2 and selection != 3 and selection != 4 \
+                and selection != 5 and selection != 6:
+            print "\n\n#####################################################"
+            print "###                                               ###"
+            print "###         YOU ENTERED AN INVALID OPTION!        ###"
+            print "###                                               ###"
+            print "#####################################################\n\n"
+        # else:
+        #     if selection == 1:
+        #         view_funds_screen(teller_name, teller_number, currency)
+        #     elif selection == 2:
+        #         withdrawal_screen(teller_name, teller_number, currency)
+        #     elif selection == 3:
+        #         deposit_screen(teller_name, teller_number, currency)
+        #     elif selection == 4:
+        #         transfer_screen(teller_name, teller_number, currency)
+        #     elif selection == 5:
+        #         if currency == 'usd':
+        #             currency = 'eur'
+        #         else:
+        #             currency = 'usd'
+        #         teller_home(teller_name, teller_number, currency)
+        #     elif selection == 6:
+        #         home_screen()
 
 
 def teller_home(teller_name, teller_number, currency):
@@ -284,7 +367,7 @@ def withdrawal_screen(teller_name, teller_number, currency):
         if acct_number.isdigit():
             acct_exists = transactions.valid_account(int(acct_number.strip()))
     amount = raw_input("Amount to withdraw: ")
-    regex = re.compile(r"^[\\d]+?\.[\\d]{2}$")
+    regex = re.compile(r"^[\d]+?\.[\d]{2}$")
     while not regex.match(amount):
         print "Please enter a valid monetary value"
         amount = raw_input("Amount to withdraw: ")
