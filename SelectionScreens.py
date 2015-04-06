@@ -8,6 +8,7 @@ import transactions
 import sys
 import re
 import getpass
+from validate_email import validate_email
 
 
 def home_screen():
@@ -81,7 +82,6 @@ def system_admin():
         print "\nYou must enter a valid username and password!\n"
         admin_username = raw_input("Please enter your username:  ")
         admin_password = getpass.getpass("Please enter your password:  ")
-    admin_password = base64.b64encode(admin_password)
     admin_name = login.admin_login(admin_username, admin_password)
     while admin_name == '':
         print "\n\n#####################################################"
@@ -201,8 +201,8 @@ def admin_home(admin_username, admin_name, currency):
         #         withdrawal_screen(teller_name, teller_number, currency)
             elif selection == 3:
                 create_teller(admin_username, admin_name, currency)
-        #     elif selection == 4:
-        #         transfer_screen(teller_name, teller_number, currency)
+            elif selection == 4:
+                create_admin(admin_username, admin_name, currency)
             elif selection == 5:
                 if currency == 'usd':
                     currency = 'eur'
@@ -507,5 +507,41 @@ def create_teller(admin_username, admin_name, currency):
         teller_name = raw_input("Please enter a valid Teller's name:  ")
     teller_number = login.create_new_teller(teller_name, admin_username)
     print "The teller number for {0} is {1}.  Please make note of this number!".format(teller_name, teller_number)
+    raw_input("\nPress <enter> to continue")
+    admin_home(admin_username, admin_name, currency)
+
+
+def create_admin(admin_username, admin_name, currency):
+    print "\n\n#####################################################"
+    print "###                                               ###"
+    print "###                 Create Teller                 ###"
+    print "###                                               ###"
+    print "#####################################################\n\n"
+    username_check = 1
+    new_admin_username = ''
+    new_admin_name = raw_input("Please enter the System Admin's name:  ")
+    while not all(x.isalpha() or x.isspace() for x in new_admin_name):
+        new_admin_name = raw_input("Please enter a valid name:  ")
+    while username_check != 0:
+        new_admin_username = raw_input("Please enter the System Admin's username:  ")
+        while not all(x.isalpha() for x in new_admin_username):
+            new_admin_username = raw_input("Please enter a valid username:  ")
+        username_check = login.check_admin_username(new_admin_username)
+        if username_check == 1:
+            print "Username is in use.  Please select another!"
+    new_admin_email = raw_input("Please enter the System Admin's email:  ")
+    while not validate_email(new_admin_email):
+        new_admin_email = raw_input("Please enter a valid email:  ")
+    new_admin_pass = getpass.getpass("Please enter a password:  ")
+    new_admin_pass_verify = getpass.getpass("Please verify your password:  ")
+    while new_admin_pass != new_admin_pass_verify:
+        print "\n\nYour passwords did not match!\n\n"
+        new_admin_pass = getpass.getpass("Please enter a password:  ")
+        new_admin_pass_verify = getpass.getpass("Please verify your password:  ")
+    success = login.create_new_admin(admin_username, new_admin_username, new_admin_name, new_admin_email, new_admin_pass)
+    if success == 1:
+        print "System Administrator has been created for {0} with username: {1}".format(new_admin_name, new_admin_username)
+    else:
+        print "User not created."
     raw_input("\nPress <enter> to continue")
     admin_home(admin_username, admin_name, currency)
