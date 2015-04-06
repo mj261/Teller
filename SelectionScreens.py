@@ -207,8 +207,8 @@ def admin_home(admin_username, admin_name, currency):
         else:
             if selection == 1:
                 view_funds_screen(admin_username, admin_name, currency, 'Admin')
-        #     elif selection == 2:
-        #         withdrawal_screen(teller_name, teller_number, currency)
+            elif selection == 2:
+                admin_modify_account(admin_username, admin_name, currency)
             elif selection == 3:
                 create_teller(admin_username, admin_name, currency)
             elif selection == 4:
@@ -306,7 +306,7 @@ def password_check(password):
 
 
 def view_funds_screen(teller_name, teller_number, currency, user_type):
-    """View account for tellers"""
+    """View account for tellers and admins"""
     print "\n\n#####################################################"
     print "###                                               ###"
     print "###                 View Account                  ###"
@@ -554,4 +554,86 @@ def create_admin(admin_username, admin_name, currency):
     else:
         print "User not created."
     raw_input("\nPress <enter> to continue")
+    admin_home(admin_username, admin_name, currency)
+
+
+def admin_modify_account(admin_username, admin_name, currency):
+    print "\n\n#####################################################"
+    print "###                                               ###"
+    print "###                Modify Account                 ###"
+    print "###                                               ###"
+    print "#####################################################\n\n"
+    acct_number = raw_input("Please enter an account number:  ")
+    if acct_number.isdigit():
+        acct_exists = transactions.valid_account(acct_number)
+    else:
+        acct_exists = 0
+    while acct_exists == 0:
+        print "That is not a valid account number!"
+        acct_number = raw_input("Please enter an account number:  ")
+        if acct_number.isdigit():
+            acct_exists = transactions.valid_account(int(acct_number.strip()))
+    data = transactions.get_account_info(acct_number)
+    for row in data:
+        name = row[0]
+        username = row[1]
+        email = row[2]
+        acct_type = row[3]
+    balance = transactions.compute_balance(acct_number)
+    if currency == "eur":
+        balance = transactions.currency_converter('usd', 'eur', balance)
+    other_accounts = transactions.alternate_accounts(username, acct_number)
+    print "\n\nAccount Number: {0}\tType: {1}".format(acct_number, acct_type)
+    print "Account Owner: {0}".format(name)
+    print "Username: {0}".format(username)
+    print "Email: {0}".format(email)
+    if currency == "usd":
+        print "Account Number {0} has a balance of ${1:.2f}".format(acct_number, balance)
+    else:
+        balance = float(balance)
+        print "Account Number {0} has a balance of €{1:.2f}".format(acct_number, balance)
+    print "Alternate Accounts:"
+    if other_accounts != '':
+        for row in other_accounts:
+            balance = transactions.compute_balance(row[0])
+            if currency == "eur":
+                balance = transactions.currency_converter('usd', 'eur', balance)
+                balance = float(balance)
+            if row[1] == "C":
+                account_type = "Checking"
+            else:
+                account_type = "Savings"
+            if currency == "usd":
+                print "\tAccount Number: {0}\tType: {1}\tBalance: ${2:.2f}"\
+                    .format(row[0], account_type, balance)
+            else:
+                print "\tAccount Number: {0}\tType: {1}\tBalance: €{2:.2f}"\
+                    .format(row[0], account_type, balance)
+    else:
+        print "None"
+    selection = 0
+    while selection != 1 and selection != 2 and selection != 3 and selection != 4:
+        print "\n\nPlease select a field to modify:\n\n"
+        print "1. Account Type"
+        print "2. Account Owner"
+        print "3. Email"
+        print "4. Password"
+        selection = raw_input("\n\nPlease enter your selection:  ").strip()
+        if selection.isdigit():
+            selection = int(selection)
+        if selection != 1 and selection != 2 and selection != 3 and selection != 4:
+            print "\n\n#####################################################"
+            print "###                                               ###"
+            print "###         YOU ENTERED AN INVALID OPTION!        ###"
+            print "###                                               ###"
+            print "#####################################################\n\n"
+        else:
+            if selection == 1:
+                transactions.modify_account_type(acct_number)
+            # elif selection == 2:
+            #     admin_modify_account(admin_username, admin_name, currency)
+            # elif selection == 3:
+            #     create_teller(admin_username, admin_name, currency)
+            # elif selection == 4:
+            #     create_admin(admin_username, admin_name, currency)
     admin_home(admin_username, admin_name, currency)

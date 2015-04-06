@@ -69,7 +69,7 @@ def alternate_accounts(username, acct_number):
     conn = conn_db.connect()
     cursor = conn.cursor()
     query = """SELECT Acct_Number, Type FROM Accounts WHERE User = '{0}' AND \
-        Acct_Number != {1} LIMIT 1""".format(username, acct_number)
+        Acct_Number != '{1}' LIMIT 1""".format(username, acct_number)
     cursor.execute(query)
     data = cursor.fetchall()
     conn_db.close_connection(conn)
@@ -81,7 +81,7 @@ def withdraw(acct_number, amount):
     epoch = time.time()
     conn = conn_db.connect()
     cursor = conn.cursor()
-    query = """INSERT INTO `Transactions`(`Acct_Number`, `Amount`, `Time`) VALUES ({0},{1},{2})"""\
+    query = """INSERT INTO `Transactions`(`Acct_Number`, `Amount`, `Time`) VALUES ('{0}','{1}','{2}')"""\
         .format(acct_number, amount, epoch)
     cursor.execute(query)
     conn_db.close_connection(conn)
@@ -101,7 +101,7 @@ def deposit(acct_number, amount):
     epoch = time.time()
     conn = conn_db.connect()
     cursor = conn.cursor()
-    query = """INSERT INTO `Transactions`(`Acct_Number`, `Amount`, `Time`) VALUES ({0},{1},{2})"""\
+    query = """INSERT INTO `Transactions`(`Acct_Number`, `Amount`, `Time`) VALUES ('{0}','{1}','{2}')"""\
         .format(acct_number, amount, epoch)
     cursor.execute(query)
     conn_db.close_connection(conn)
@@ -128,3 +128,27 @@ def currency_converter(currency_from, currency_to, currency_input):
             return error.code
         elif hasattr(error, 'reason'):
             return error.reason
+
+
+def get_account_info(acct_number):
+    """Find Account Info"""
+    conn = conn_db.connect()
+    cursor = conn.cursor()
+    query = """SELECT Name, Username, Email, Type FROM Accounts LEFT JOIN Users on Users.Username = Accounts.User
+        WHERE Acct_Number = '{0}' LIMIT 1""".format(acct_number)
+    cursor.execute(query)
+    data = cursor.fetchall()
+    conn_db.close_connection(conn)
+    return data
+
+
+def modify_account_type(acct_number):
+    new_type = ''
+    while new_type != 'C' and new_type != 'S':
+        new_type = raw_input("Please enter an account type (C)hecking or (S)avings for account {0}:  ".format(acct_number)).upper()
+    conn = conn_db.connect()
+    cursor = conn.cursor()
+    query = """UPDATE Accounts SET Type = '{0}' WHERE Acct_Number = '{1}'""".format(new_type, acct_number)
+    cursor.execute(query)
+    conn_db.close_connection(conn)
+
