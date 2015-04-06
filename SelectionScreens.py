@@ -147,8 +147,7 @@ def new_user():
 
 def old_user():
     """Screen for old users to login"""
-	
-	while(True):
+    while(True):
 		user_username = raw_input("Please enter your username:  ")
 		user_password = getpass.getpass("Please enter your password:  ")
 		login_result = login.user_login(user_username, user_password)
@@ -525,7 +524,7 @@ def create_teller(admin_username, admin_name, currency):
 def create_admin(admin_username, admin_name, currency):
     print "\n\n#####################################################"
     print "###                                               ###"
-    print "###                 Create Teller                 ###"
+    print "###                 Create Admin                  ###"
     print "###                                               ###"
     print "#####################################################\n\n"
     username_check = 1
