@@ -95,7 +95,6 @@ def system_admin():
             print "\nYou must enter a username and password!\n"
             admin_username = raw_input("Please enter your username:  ")
             admin_password = getpass.getpass("Please enter your password:  ")
-        admin_password = base64.b64encode(admin_password)
         admin_name = login.admin_login(admin_username, admin_password)
     admin_home(admin_username, admin_name, 'usd')
 
