@@ -78,7 +78,8 @@ def system_admin():
     print "#####################################################\n\n"
     admin_username = raw_input("Please enter your username:  ")
     admin_password = getpass.getpass("Please enter your password:  ")
-    while admin_username == '' or admin_password == '' or not admin_username.isalnum() or not admin_password.isalnum():
+    while admin_username == '' or admin_password == '' or not admin_username.isalnum() \
+            or not admin_password.isalnum():
         print "\nYou must enter a valid username and password!\n"
         admin_username = raw_input("Please enter your username:  ")
         admin_password = getpass.getpass("Please enter your password:  ")
@@ -91,7 +92,8 @@ def system_admin():
         print "#####################################################\n\n"
         admin_username = raw_input("Please enter your username:  ")
         admin_password = getpass.getpass("Please enter your password:  ")
-        while admin_username == '' or admin_password == '' or not admin_username.isalnum() or not admin_password.isalnum():
+        while admin_username == '' or admin_password == '' or not admin_username.isalnum() \
+                or not admin_password.isalnum():
             print "\nYou must enter a username and password!\n"
             admin_username = raw_input("Please enter your username:  ")
             admin_password = getpass.getpass("Please enter your password:  ")
@@ -548,9 +550,11 @@ def create_admin(admin_username, admin_name, currency):
         print "\n\nYour passwords did not match!\n\n"
         new_admin_pass = getpass.getpass("Please enter a password:  ")
         new_admin_pass_verify = getpass.getpass("Please verify your password:  ")
-    success = login.create_new_admin(admin_username, new_admin_username, new_admin_name, new_admin_email, new_admin_pass)
+    success = login.create_new_admin(admin_username, new_admin_username, new_admin_name,
+                                     new_admin_email, new_admin_pass)
     if success == 1:
-        print "System Administrator has been created for {0} with username: {1}".format(new_admin_name, new_admin_username)
+        print "System Administrator has been created for {0} with username: {1}"\
+            .format(new_admin_name, new_admin_username)
     else:
         print "User not created."
     raw_input("\nPress <enter> to continue")
@@ -574,6 +578,10 @@ def admin_modify_account(admin_username, admin_name, currency):
         if acct_number.isdigit():
             acct_exists = transactions.valid_account(int(acct_number.strip()))
     data = transactions.get_account_info(acct_number)
+    username = ''
+    acct_type = ''
+    name = ''
+    email = ''
     for row in data:
         name = row[0]
         username = row[1]
