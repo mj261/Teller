@@ -58,7 +58,10 @@ def admin_login(username, password):
     cursor.execute(query)
     for database_password in cursor:
         password_hash = ''.join(map(str, database_password))
-    login = pbkdf2_sha256.verify(password, password_hash)
+    try:
+        login = pbkdf2_sha256.verify(password, password_hash)
+    except ValueError:
+        login = False
     if not login:
         cursor.close()
         conn_db.close_connection(conn)
@@ -106,7 +109,7 @@ def check_username(username):
 
 
 def check_admin_username(username):
-    """Check if username exists"""
+    """Check if admin username exists"""
     present = 0
     conn = conn_db.connect()
     cursor = conn.cursor()
@@ -125,7 +128,7 @@ def create_new_teller(teller_name, admin_username):
     teller_number = 0
     present = 1
     while present == 1:
-        teller_number = randint(1000, 9999)
+        teller_number = randint(1000000000, 9999999999)
         conn = conn_db.connect()
         cursor = conn.cursor()
         query = """SELECT EXISTS(SELECT * FROM Tellers WHERE Code = '{0}') AS Does_Exist"""\
