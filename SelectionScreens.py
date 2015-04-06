@@ -135,7 +135,7 @@ def new_user():
         username_check = login.check_username(username)
         if username_check == 1:
             print "Username is in use.  Please select another!"
-    password = raw_input("Please select your password: ")
+    password = getpass.getpass("Please select your password: ")
 
     password = password_check(password)
     success = login.create_user(username, password, email, name)
@@ -149,7 +149,7 @@ def new_user():
 def old_user():
     """Screen for old users"""
     user_username = raw_input("Please enter your username:  ")
-    user_password = raw_input("Please enter your password:  ")
+    user_password = getpass.getpass("Please enter your password:  ")
 
 
 def admin_home(admin_username, admin_name, currency):
@@ -199,8 +199,8 @@ def admin_home(admin_username, admin_name, currency):
                 view_funds_screen(admin_username, admin_name, currency, 'Admin')
         #     elif selection == 2:
         #         withdrawal_screen(teller_name, teller_number, currency)
-        #     elif selection == 3:
-        #         deposit_screen(teller_name, teller_number, currency)
+            elif selection == 3:
+                create_teller(admin_username, admin_name, currency)
         #     elif selection == 4:
         #         transfer_screen(teller_name, teller_number, currency)
             elif selection == 5:
@@ -283,7 +283,7 @@ def password_check(password):
     """Check for password length"""
     if len(password) < 6:
         print "Passwords need to be at least 6 long"
-        password = raw_input("Please enter again: ")
+        password = getpass.getpass("Please enter again: ")
         password_check(password)
     else:
         # A way to encode/ decode passwords, I just put both in there to look at.
@@ -295,7 +295,7 @@ def password_check(password):
         return encode
 
 
-def view_funds_screen(teller_name, teller_number, currency, user):
+def view_funds_screen(teller_name, teller_number, currency, user_type):
     """View account for tellers"""
     print "\n\n#####################################################"
     print "###                                               ###"
@@ -346,9 +346,9 @@ def view_funds_screen(teller_name, teller_number, currency, user):
     else:
         print "None"
     raw_input("\n\nPress <enter> to continue")
-    if user == 'Teller':
+    if user_type == 'Teller':
         teller_home(teller_name, teller_number, currency)
-    elif user == 'Admin':
+    elif user_type == 'Admin':
         admin_home(teller_name, teller_number, currency)
 
 
@@ -493,3 +493,19 @@ def transfer_screen(teller_name, teller_number, currency):
                 .format(amount, acct_number_withdraw)
     raw_input("\nPress <enter> to continue")
     teller_home(teller_name, teller_number, currency)
+
+
+def create_teller(admin_username, admin_name, currency):
+    """Create New Teller"""
+    print "\n\n#####################################################"
+    print "###                                               ###"
+    print "###                 Create Teller                 ###"
+    print "###                                               ###"
+    print "#####################################################\n\n"
+    teller_name = raw_input("Please enter the Teller's name:  ")
+    while not all(x.isalpha() or x.isspace() for x in teller_name):
+        teller_name = raw_input("Please enter a valid Teller's name:  ")
+    teller_number = login.create_new_teller(teller_name, admin_username)
+    print "The teller number for {0} is {1}.  Please make note of this number!".format(teller_name, teller_number)
+    raw_input("\nPress <enter> to continue")
+    admin_home(admin_username, admin_name, currency)

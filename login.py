@@ -1,6 +1,7 @@
 # coding=utf-8
 """User, Admin, & Teller logins"""
 import conn_db
+from random import randint
 
 
 def teller_login(teller_number):
@@ -72,3 +73,32 @@ def check_username(username):
     conn_db.close_connection(conn)
     present = int(''.join(map(str, present)))
     return present
+
+
+def create_new_teller(teller_name, admin_username):
+    teller_number = 0
+    present = 1
+    while present == 1:
+        teller_number = randint(1000, 9999)
+        conn = conn_db.connect()
+        cursor = conn.cursor()
+        query = """SELECT EXISTS(SELECT * FROM Tellers WHERE Code = '{0}') AS Does_Exist"""\
+            .format(teller_number)
+        cursor.execute(query)
+        for does_exist in cursor:
+            present = does_exist
+        conn_db.close_connection(conn)
+        present = int(''.join(map(str, present)))
+    conn = conn_db.connect()
+    cursor = conn.cursor()
+    query = """INSERT INTO Tellers VALUES ('{0}', '{1}')"""\
+        .format(teller_name, teller_number)
+    cursor.execute(query)
+    cursor.close()
+    operation = "Create new teller {0} with login code {1}".format(teller_name, teller_number)
+    cursor = conn.cursor()
+    query = """INSERT INTO Admin_Log (User, Operation) VALUES ('{0}', '{1}')"""\
+        .format(admin_username, operation)
+    cursor.execute(query)
+    cursor.close()
+    return teller_number
