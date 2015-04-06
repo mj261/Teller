@@ -37,7 +37,16 @@ def encrypt_password(clear_password):
 
 def user_login(username, password):
     """User Login"""
-    print "User Logged in"
+    user_name = ''
+    conn = conn_db.connect()
+    cursor = conn.cursor()
+    query = """SELECT Name FROM Users WHERE Username = '{0}' and Password = '{1}'""".format(username, password)
+    cursor.execute(query)
+    for name in cursor:
+        user_name = name
+    conn_db.close_connection(conn)
+    user_name = ''.join(map(str, user_name))
+    return user_name
 
 
 def admin_login(username, password):
