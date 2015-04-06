@@ -147,12 +147,10 @@ def new_user():
 
 def old_user():
     """Screen for old users to login"""
-	
 	while(True):
 		user_username = raw_input("Please enter your username:  ")
 		user_password = getpass.getpass("Please enter your password:  ")
 		login_result = login.user_login(user_username, user_password)
-		
 		user_input = ""		
 		if(login_result == False):	
 			while(user_input != "y" and user_input != "n"):
@@ -162,6 +160,7 @@ def old_user():
 		else:
 			print "login successful!"
 			break
+
 
 def admin_home(admin_username, admin_name, currency):
     """Home page for system admin after login"""
