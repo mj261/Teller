@@ -632,11 +632,11 @@ def admin_modify_account(admin_username, admin_name, currency):
             print "#####################################################\n\n"
         else:
             if selection == 1:
-                transactions.modify_account_type(acct_number)
+                transactions.modify_account_type(admin_username, acct_number)
             elif selection == 2:
-                transactions.modify_account_owner(acct_number)
+                transactions.modify_account_owner(admin_username, acct_number)
             elif selection == 3:
-                transactions.modify_account_email(acct_number)
+                transactions.modify_account_email(admin_username, acct_number)
             elif selection == 4:
-                transactions.modify_account_password(acct_number)
+                transactions.modify_account_password(admin_username, acct_number)
     admin_home(admin_username, admin_name, currency)

@@ -145,7 +145,7 @@ def get_account_info(acct_number):
     return data
 
 
-def modify_account_type(acct_number):
+def modify_account_type(admin_username, acct_number):
     new_type = ''
     while new_type != 'C' and new_type != 'S':
         new_type = raw_input("Please enter an account type (C)hecking or (S)avings for account "
@@ -154,10 +154,18 @@ def modify_account_type(acct_number):
     cursor = conn.cursor()
     query = """UPDATE Accounts SET Type = '{0}' WHERE Acct_Number = '{1}'""".format(new_type, acct_number)
     cursor.execute(query)
+    cursor.close()
+    conn_db.close_connection(conn)
+    conn = conn_db.connect()
+    cursor = conn.cursor()
+    operation = "Changed account number {0} to type {1}".format(acct_number, new_type)
+    query = """INSERT INTO Admin_Log (User, Operation) VALUES ('{0}', '{1}')""".format(admin_username, operation)
+    cursor.execute(query)
+    cursor.close()
     conn_db.close_connection(conn)
 
 
-def modify_account_owner(acct_number):
+def modify_account_owner(admin_username, acct_number):
     name = raw_input("Please enter the account owner's name:  ")
     while not all(x.isalpha() or x.isspace() for x in name):
         name = raw_input("Please enter a valid name:  ")
@@ -166,9 +174,16 @@ def modify_account_owner(acct_number):
     query = """UPDATE Users SET Name = '{0}' WHERE Username = (SELECT User FROM Accounts WHERE Acct_Number = '{1}')""".format(name, acct_number)
     cursor.execute(query)
     conn_db.close_connection(conn)
+    conn = conn_db.connect()
+    cursor = conn.cursor()
+    operation = "Changed owner name to {0} for account number {1}".format(name, acct_number)
+    query = """INSERT INTO Admin_Log (User, Operation) VALUES ('{0}', '{1}')""".format(admin_username, operation)
+    cursor.execute(query)
+    cursor.close()
+    conn_db.close_connection(conn)
 
 
-def modify_account_email(acct_number):
+def modify_account_email(admin_username, acct_number):
     email = raw_input("Please enter the account owner's email:  ")
     while not validate_email(email):
         email = raw_input("Please enter a valid email:  ")
@@ -177,9 +192,16 @@ def modify_account_email(acct_number):
     query = """UPDATE Users SET Email = '{0}' WHERE Username = (SELECT User FROM Accounts WHERE Acct_Number = '{1}')""".format(email, acct_number)
     cursor.execute(query)
     conn_db.close_connection(conn)
+    conn = conn_db.connect()
+    cursor = conn.cursor()
+    operation = "Changed owner email to {0} for account number {1}".format(email, acct_number)
+    query = """INSERT INTO Admin_Log (User, Operation) VALUES ('{0}', '{1}')""".format(admin_username, operation)
+    cursor.execute(query)
+    cursor.close()
+    conn_db.close_connection(conn)
 
 
-def modify_account_password(acct_number):
+def modify_account_password(admin_username, acct_number):
     password = getpass.getpass("Please enter a password:  ")
     password_verify = getpass.getpass("Please verify your password:  ")
     while password != password_verify:
@@ -191,4 +213,11 @@ def modify_account_password(acct_number):
     cursor = conn.cursor()
     query = """UPDATE Users SET Password = '{0}' WHERE Username = (SELECT User FROM Accounts WHERE Acct_Number = '{1}')""".format(password, acct_number)
     cursor.execute(query)
+    conn_db.close_connection(conn)
+    conn = conn_db.connect()
+    cursor = conn.cursor()
+    operation = "Changed password for account number {0}".format(acct_number)
+    query = """INSERT INTO Admin_Log (User, Operation) VALUES ('{0}', '{1}')""".format(admin_username, operation)
+    cursor.execute(query)
+    cursor.close()
     conn_db.close_connection(conn)
