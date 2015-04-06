@@ -145,10 +145,10 @@ def get_account_info(acct_number):
 def modify_account_type(acct_number):
     new_type = ''
     while new_type != 'C' and new_type != 'S':
-        new_type = raw_input("Please enter an account type (C)hecking or (S)avings for account {0}:  ".format(acct_number)).upper()
+        new_type = raw_input("Please enter an account type (C)hecking or (S)avings for account "
+                             "{0}:  ".format(acct_number)).upper()
     conn = conn_db.connect()
     cursor = conn.cursor()
     query = """UPDATE Accounts SET Type = '{0}' WHERE Acct_Number = '{1}'""".format(new_type, acct_number)
     cursor.execute(query)
     conn_db.close_connection(conn)
-
