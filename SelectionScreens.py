@@ -1,14 +1,13 @@
 # coding=utf-8
 """Selection Screen Function"""
 
-import login
-import base64
 import math
 import transactions
 import sys
 import re
 import getpass
 from validate_email import validate_email
+import login
 
 
 def home_screen():
@@ -149,19 +148,19 @@ def new_user():
 
 def old_user():
     """Screen for old users to login"""
-    while(True):
+    login_result = ''
+    while login_result == '':
         user_username = raw_input("Please enter your username:  ")
         user_password = getpass.getpass("Please enter your password:  ")
         login_result = login.user_login(user_username, user_password)
         user_input = ""
-        if(login_result == False):
-            while(user_input != "y" and user_input != "n"):
+        if login_result == '':
+            while user_input != "y" and user_input != "n":
                 user_input = raw_input("incorrect login information. Try Again? (y)es or (n)o").lower()
-            if(user_input == "n"):
+            if user_input == "n":
                 home_screen()
         else:
-            print "login successful!"
-            break
+            user_home()
 
 
 def admin_home(admin_username, admin_name, currency):
@@ -299,11 +298,7 @@ def password_check(password):
         password_check(password)
     else:
         # A way to encode/ decode passwords, I just put both in there to look at.
-        encode = base64.b64encode(password)
-        decode = base64.b64decode(encode)
-        print "Password saved"
-        print encode
-        print decode
+        encode = login.encrypt_password(password)
         return encode
 
 
@@ -638,10 +633,10 @@ def admin_modify_account(admin_username, admin_name, currency):
         else:
             if selection == 1:
                 transactions.modify_account_type(acct_number)
-            # elif selection == 2:
-            #     admin_modify_account(admin_username, admin_name, currency)
-            # elif selection == 3:
-            #     create_teller(admin_username, admin_name, currency)
-            # elif selection == 4:
-            #     create_admin(admin_username, admin_name, currency)
+            elif selection == 2:
+                transactions.modify_account_owner(acct_number)
+            elif selection == 3:
+                transactions.modify_account_email(acct_number)
+            elif selection == 4:
+                transactions.modify_account_password(acct_number)
     admin_home(admin_username, admin_name, currency)

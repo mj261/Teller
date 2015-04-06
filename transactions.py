@@ -4,6 +4,9 @@ import conn_db
 import time
 import json
 import urllib2
+from validate_email import validate_email
+import getpass
+import login
 
 
 def compute_balance(acct_number):
@@ -150,5 +153,42 @@ def modify_account_type(acct_number):
     conn = conn_db.connect()
     cursor = conn.cursor()
     query = """UPDATE Accounts SET Type = '{0}' WHERE Acct_Number = '{1}'""".format(new_type, acct_number)
+    cursor.execute(query)
+    conn_db.close_connection(conn)
+
+
+def modify_account_owner(acct_number):
+    name = raw_input("Please enter the account owner's name:  ")
+    while not all(x.isalpha() or x.isspace() for x in name):
+        name = raw_input("Please enter a valid name:  ")
+    conn = conn_db.connect()
+    cursor = conn.cursor()
+    query = """UPDATE Users SET Name = '{0}' WHERE Username = (SELECT User FROM Accounts WHERE Acct_Number = '{1}')""".format(name, acct_number)
+    cursor.execute(query)
+    conn_db.close_connection(conn)
+
+
+def modify_account_email(acct_number):
+    email = raw_input("Please enter the account owner's email:  ")
+    while not validate_email(email):
+        email = raw_input("Please enter a valid email:  ")
+    conn = conn_db.connect()
+    cursor = conn.cursor()
+    query = """UPDATE Users SET Email = '{0}' WHERE Username = (SELECT User FROM Accounts WHERE Acct_Number = '{1}')""".format(email, acct_number)
+    cursor.execute(query)
+    conn_db.close_connection(conn)
+
+
+def modify_account_password(acct_number):
+    password = getpass.getpass("Please enter a password:  ")
+    password_verify = getpass.getpass("Please verify your password:  ")
+    while password != password_verify:
+        print "\n\nYour passwords did not match!\n\n"
+        password = getpass.getpass("Please enter a password:  ")
+        password_verify = getpass.getpass("Please verify your password:  ")
+    password = login.encrypt_password(password)
+    conn = conn_db.connect()
+    cursor = conn.cursor()
+    query = """UPDATE Users SET Password = '{0}' WHERE Username = (SELECT User FROM Accounts WHERE Acct_Number = '{1}')""".format(password, acct_number)
     cursor.execute(query)
     conn_db.close_connection(conn)

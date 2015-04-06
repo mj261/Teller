@@ -38,15 +38,32 @@ def encrypt_password(clear_password):
 def user_login(username, password):
     """User Login"""
     user_name = ''
+    password_hash = ''
     conn = conn_db.connect()
     cursor = conn.cursor()
-    query = """SELECT Name FROM Users WHERE Username = '{0}' and Password = '{1}'""".format(username, password)
+    query = """SELECT Password FROM Users WHERE Username = '{0}' LIMIT 1""".format(username)
     cursor.execute(query)
-    for name in cursor:
-        user_name = name
-    conn_db.close_connection(conn)
-    user_name = ''.join(map(str, user_name))
-    return user_name
+    for database_password in cursor:
+        password_hash = ''.join(map(str, database_password))
+    try:
+        login = pbkdf2_sha256.verify(password, password_hash)
+    except ValueError:
+        login = False
+    if not login:
+        cursor.close()
+        conn_db.close_connection(conn)
+        user_name = ''
+        return user_name
+    else:
+        conn = conn_db.connect()
+        cursor = conn.cursor()
+        query = """SELECT Name FROM Users WHERE Username = '{0}' LIMIT 1""".format(username)
+        cursor.execute(query)
+        for user_name in cursor:
+            user_name = ''.join(map(str, user_name))
+        cursor.close()
+        conn_db.close_connection(conn)
+        return user_name
 
 
 def admin_login(username, password):
