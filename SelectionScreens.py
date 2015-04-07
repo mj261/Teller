@@ -9,7 +9,7 @@ import sys
 import re
 import getpass
 from validate_email import validate_email
-
+from passlib.context import CryptContext
 
 def home_screen():
     """Home Screen presented at Application Startup"""
@@ -281,18 +281,14 @@ def user_home():
 
 def password_check(password):
     """Check for password length"""
-    if len(password) < 6:
-        print "Passwords need to be at least 6 long"
+    if len(password) < 6 or passoword.isupper() or password.islower() or password.isdigit():
+        print "Passwords need to be at least 6 long, with upper and lowercase characters, and a number"
         password = getpass.getpass("Please enter again: ")
         password_check(password)
+			
     else:
-        # A way to encode/ decode passwords, I just put both in there to look at.
-        encode = base64.b64encode(password)
-        decode = base64.b64decode(encode)
-        print "Password saved"
-        print encode
-        print decode
-        return encode
+        print "Password Saved"
+        return password
 
 
 def view_funds_screen(teller_name, teller_number, currency, user_type):
