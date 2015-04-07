@@ -156,7 +156,8 @@ def old_user():
         user_input = ""
         if login_result == '':
             while user_input != "y" and user_input != "n":
-                user_input = raw_input("incorrect login information. Try Again? (y)es or (n)o").lower()
+                user_input = raw_input("incorrect login information. Try Again? "
+                                       "(y)es or (n)o").lower()
             if user_input == "n":
                 home_screen()
         else:
@@ -513,12 +514,14 @@ def create_teller(admin_username, admin_name, currency):
     while not all(x.isalpha() or x.isspace() for x in teller_name):
         teller_name = raw_input("Please enter a valid Teller's name:  ")
     teller_number = login.create_new_teller(teller_name, admin_username)
-    print "The teller number for {0} is {1}.  Please make note of this number!".format(teller_name, teller_number)
+    print "The teller number for {0} is {1}.  Please make note of this number!"\
+        .format(teller_name, teller_number)
     raw_input("\nPress <enter> to continue")
     admin_home(admin_username, admin_name, currency)
 
 
 def create_admin(admin_username, admin_name, currency):
+    """Create Admin by Admin"""
     print "\n\n#####################################################"
     print "###                                               ###"
     print "###                 Create Teller                 ###"
@@ -557,6 +560,7 @@ def create_admin(admin_username, admin_name, currency):
 
 
 def admin_modify_account(admin_username, admin_name, currency):
+    """Admin modifying account"""
     print "\n\n#####################################################"
     print "###                                               ###"
     print "###                Modify Account                 ###"

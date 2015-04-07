@@ -1,7 +1,7 @@
 # coding=utf-8
 """User, Admin, & Teller logins"""
 import conn_db
-from random import randint
+import random
 from passlib.hash import pbkdf2_sha256
 
 
@@ -145,7 +145,8 @@ def create_new_teller(teller_name, admin_username):
     teller_number = 0
     present = 1
     while present == 1:
-        teller_number = randint(1000000000, 9999999999)
+        rng = random.SystemRandom()
+        teller_number = rng.randint(1000000000, 9999999999)
         conn = conn_db.connect()
         cursor = conn.cursor()
         query = """SELECT EXISTS(SELECT * FROM Tellers WHERE Code = '{0}') AS Does_Exist"""\
