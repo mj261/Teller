@@ -1,7 +1,7 @@
 # coding=utf-8
 """User, Admin, & Teller logins"""
 import conn_db
-from random import randint
+import random
 from passlib.hash import pbkdf2_sha256
 
 
@@ -41,26 +41,30 @@ def user_login(username, password):
     password_hash = ''
     conn = conn_db.connect()
     cursor = conn.cursor()
-    query = """SELECT Name FROM Users WHERE Username = '{0}' and Password = '{1}'""".format(username, password)
+    query = """SELECT Password FROM Users WHERE Username = '{0}' LIMIT 1""".format(username)
     cursor.execute(query)
     for database_password in cursor:
-		password_hash = ''.join(map(str, database_password))
-    login = pbkdf2_sha256.verify(password, password_hash)
+        password_hash = ''.join(map(str, database_password))
+    try:
+        login = pbkdf2_sha256.verify(password, password_hash)
+    except ValueError:
+        login = False
     if not login:
-		cursor.close()
-		conn_db.close_connection(conn)
-		user_name = ''
-		return user_name
-    else: 
-		cursor = conn.cursor()
-		query = """SELECT Name FROM Admins WHERE Username = '{0}' LIMIT 1""".format(username)
-		cursor.execute(query)
-		for user in cursor:
-			user_name = ''.join(map(str, user_name))
-		cursor.close()
-		conn_db.close_connection(conn)
-		return admin_name
-    
+        cursor.close()
+        conn_db.close_connection(conn)
+        user_name = ''
+        return user_name
+    else:
+        conn = conn_db.connect()
+        cursor = conn.cursor()
+        query = """SELECT Name FROM Users WHERE Username = '{0}' LIMIT 1""".format(username)
+        cursor.execute(query)
+        for user_name in cursor:
+            user_name = ''.join(map(str, user_name))
+        cursor.close()
+        conn_db.close_connection(conn)
+        return user_name
+
 
 
 def admin_login(username, password):
@@ -72,7 +76,10 @@ def admin_login(username, password):
     cursor.execute(query)
     for database_password in cursor:
         password_hash = ''.join(map(str, database_password))
-    login = pbkdf2_sha256.verify(password, password_hash)
+    try:
+        login = pbkdf2_sha256.verify(password, password_hash)
+    except ValueError:
+        login = False
     if not login:
         cursor.close()
         conn_db.close_connection(conn)
@@ -120,7 +127,7 @@ def check_username(username):
 
 
 def check_admin_username(username):
-    """Check if username exists"""
+    """Check if admin username exists"""
     present = 0
     conn = conn_db.connect()
     cursor = conn.cursor()
@@ -139,7 +146,8 @@ def create_new_teller(teller_name, admin_username):
     teller_number = 0
     present = 1
     while present == 1:
-        teller_number = randint(1000, 9999)
+        rng = random.SystemRandom()
+        teller_number = rng.randint(1000000000, 9999999999)
         conn = conn_db.connect()
         cursor = conn.cursor()
         query = """SELECT EXISTS(SELECT * FROM Tellers WHERE Code = '{0}') AS Does_Exist"""\

@@ -1,15 +1,18 @@
 # coding=utf-8
 """Selection Screen Function"""
 
-import login
-import base64
 import math
 import transactions
 import sys
 import re
 import getpass
 from validate_email import validate_email
+<<<<<<< HEAD
 from passlib.context import CryptContext
+=======
+import login
+
+>>>>>>> 4887cf948fb5d9f6a600217acf17b9fddb77dcca
 
 def home_screen():
     """Home Screen presented at Application Startup"""
@@ -78,7 +81,8 @@ def system_admin():
     print "#####################################################\n\n"
     admin_username = raw_input("Please enter your username:  ")
     admin_password = getpass.getpass("Please enter your password:  ")
-    while admin_username == '' or admin_password == '' or not admin_username.isalnum() or not admin_password.isalnum():
+    while admin_username == '' or admin_password == '' or not admin_username.isalnum() \
+            or not admin_password.isalnum():
         print "\nYou must enter a valid username and password!\n"
         admin_username = raw_input("Please enter your username:  ")
         admin_password = getpass.getpass("Please enter your password:  ")
@@ -91,11 +95,11 @@ def system_admin():
         print "#####################################################\n\n"
         admin_username = raw_input("Please enter your username:  ")
         admin_password = getpass.getpass("Please enter your password:  ")
-        while admin_username == '' or admin_password == '' or not admin_username.isalnum() or not admin_password.isalnum():
+        while admin_username == '' or admin_password == '' or not admin_username.isalnum() \
+                or not admin_password.isalnum():
             print "\nYou must enter a username and password!\n"
             admin_username = raw_input("Please enter your username:  ")
             admin_password = getpass.getpass("Please enter your password:  ")
-        admin_password = base64.b64encode(admin_password)
         admin_name = login.admin_login(admin_username, admin_password)
     admin_home(admin_username, admin_name, 'usd')
 
@@ -147,9 +151,21 @@ def new_user():
 
 
 def old_user():
-    """Screen for old users"""
-    user_username = raw_input("Please enter your username:  ")
-    user_password = getpass.getpass("Please enter your password:  ")
+    """Screen for old users to login"""
+    login_result = ''
+    while login_result == '':
+        user_username = raw_input("Please enter your username:  ")
+        user_password = getpass.getpass("Please enter your password:  ")
+        login_result = login.user_login(user_username, user_password)
+        user_input = ""
+        if login_result == '':
+            while user_input != "y" and user_input != "n":
+                user_input = raw_input("incorrect login information. Try Again? "
+                                       "(y)es or (n)o").lower()
+            if user_input == "n":
+                home_screen()
+        else:
+            user_home()
 
 
 def admin_home(admin_username, admin_name, currency):
@@ -197,8 +213,8 @@ def admin_home(admin_username, admin_name, currency):
         else:
             if selection == 1:
                 view_funds_screen(admin_username, admin_name, currency, 'Admin')
-        #     elif selection == 2:
-        #         withdrawal_screen(teller_name, teller_number, currency)
+            elif selection == 2:
+                admin_modify_account(admin_username, admin_name, currency)
             elif selection == 3:
                 create_teller(admin_username, admin_name, currency)
             elif selection == 4:
@@ -287,12 +303,11 @@ def password_check(password):
         password_check(password)
 			
     else:
-        print "Password Saved"
-        return password
-
+		print "Password Saved"
+		return password
 
 def view_funds_screen(teller_name, teller_number, currency, user_type):
-    """View account for tellers"""
+    """View account for tellers and admins"""
     print "\n\n#####################################################"
     print "###                                               ###"
     print "###                 View Account                  ###"
@@ -502,12 +517,14 @@ def create_teller(admin_username, admin_name, currency):
     while not all(x.isalpha() or x.isspace() for x in teller_name):
         teller_name = raw_input("Please enter a valid Teller's name:  ")
     teller_number = login.create_new_teller(teller_name, admin_username)
-    print "The teller number for {0} is {1}.  Please make note of this number!".format(teller_name, teller_number)
+    print "The teller number for {0} is {1}.  Please make note of this number!"\
+        .format(teller_name, teller_number)
     raw_input("\nPress <enter> to continue")
     admin_home(admin_username, admin_name, currency)
 
 
 def create_admin(admin_username, admin_name, currency):
+    """Create Admin by Admin"""
     print "\n\n#####################################################"
     print "###                                               ###"
     print "###                 Create Teller                 ###"
@@ -534,10 +551,99 @@ def create_admin(admin_username, admin_name, currency):
         print "\n\nYour passwords did not match!\n\n"
         new_admin_pass = getpass.getpass("Please enter a password:  ")
         new_admin_pass_verify = getpass.getpass("Please verify your password:  ")
-    success = login.create_new_admin(admin_username, new_admin_username, new_admin_name, new_admin_email, new_admin_pass)
+    success = login.create_new_admin(admin_username, new_admin_username, new_admin_name,
+                                     new_admin_email, new_admin_pass)
     if success == 1:
-        print "System Administrator has been created for {0} with username: {1}".format(new_admin_name, new_admin_username)
+        print "System Administrator has been created for {0} with username: {1}"\
+            .format(new_admin_name, new_admin_username)
     else:
         print "User not created."
     raw_input("\nPress <enter> to continue")
+    admin_home(admin_username, admin_name, currency)
+
+
+def admin_modify_account(admin_username, admin_name, currency):
+    """Admin modifying account"""
+    print "\n\n#####################################################"
+    print "###                                               ###"
+    print "###                Modify Account                 ###"
+    print "###                                               ###"
+    print "#####################################################\n\n"
+    acct_number = raw_input("Please enter an account number:  ")
+    if acct_number.isdigit():
+        acct_exists = transactions.valid_account(acct_number)
+    else:
+        acct_exists = 0
+    while acct_exists == 0:
+        print "That is not a valid account number!"
+        acct_number = raw_input("Please enter an account number:  ")
+        if acct_number.isdigit():
+            acct_exists = transactions.valid_account(int(acct_number.strip()))
+    data = transactions.get_account_info(acct_number)
+    username = ''
+    acct_type = ''
+    name = ''
+    email = ''
+    for row in data:
+        name = row[0]
+        username = row[1]
+        email = row[2]
+        acct_type = row[3]
+    balance = transactions.compute_balance(acct_number)
+    if currency == "eur":
+        balance = transactions.currency_converter('usd', 'eur', balance)
+    other_accounts = transactions.alternate_accounts(username, acct_number)
+    print "\n\nAccount Number: {0}\tType: {1}".format(acct_number, acct_type)
+    print "Account Owner: {0}".format(name)
+    print "Username: {0}".format(username)
+    print "Email: {0}".format(email)
+    if currency == "usd":
+        print "Account Number {0} has a balance of ${1:.2f}".format(acct_number, balance)
+    else:
+        balance = float(balance)
+        print "Account Number {0} has a balance of €{1:.2f}".format(acct_number, balance)
+    print "Alternate Accounts:"
+    if other_accounts != '':
+        for row in other_accounts:
+            balance = transactions.compute_balance(row[0])
+            if currency == "eur":
+                balance = transactions.currency_converter('usd', 'eur', balance)
+                balance = float(balance)
+            if row[1] == "C":
+                account_type = "Checking"
+            else:
+                account_type = "Savings"
+            if currency == "usd":
+                print "\tAccount Number: {0}\tType: {1}\tBalance: ${2:.2f}"\
+                    .format(row[0], account_type, balance)
+            else:
+                print "\tAccount Number: {0}\tType: {1}\tBalance: €{2:.2f}"\
+                    .format(row[0], account_type, balance)
+    else:
+        print "None"
+    selection = 0
+    while selection != 1 and selection != 2 and selection != 3 and selection != 4:
+        print "\n\nPlease select a field to modify:\n\n"
+        print "1. Account Type"
+        print "2. Account Owner"
+        print "3. Email"
+        print "4. Password"
+        selection = raw_input("\n\nPlease enter your selection:  ").strip()
+        if selection.isdigit():
+            selection = int(selection)
+        if selection != 1 and selection != 2 and selection != 3 and selection != 4:
+            print "\n\n#####################################################"
+            print "###                                               ###"
+            print "###         YOU ENTERED AN INVALID OPTION!        ###"
+            print "###                                               ###"
+            print "#####################################################\n\n"
+        else:
+            if selection == 1:
+                transactions.modify_account_type(admin_username, acct_number)
+            elif selection == 2:
+                transactions.modify_account_owner(admin_username, acct_number)
+            elif selection == 3:
+                transactions.modify_account_email(admin_username, acct_number)
+            elif selection == 4:
+                transactions.modify_account_password(admin_username, acct_number)
     admin_home(admin_username, admin_name, currency)
