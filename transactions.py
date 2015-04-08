@@ -117,6 +117,18 @@ def withdraw(acct_number, amount):
     cursor.execute(query)
     conn_db.close_connection(conn)
 
+def transfer(acct_num_from, acct_num_to, amount):
+	epoch = time.time()
+	conn = conn_db.connect()
+	cursor = conn.cursor()
+	verify_transfer_funds(acct_num_from,amount)
+	query = """INSERT INTO `Transactions`(`Acct_Number`, `Amount`, `Time`) VALUES
+        ('{0}','{1}','{2}')""".format(acct_num_from, -amount, epoch)
+	cursor.execute(query)
+	query = """INSERT INTO `Transactions`(`Acct_Number`, `Amount`, `Time`) VALUES
+        ('{0}','{1}','{2}')""".format(acct_num_to, amount, epoch)
+	cursor.execute(query)
+	conn_db.close_connection(conn)
 
 def verify_funds(acct_number, amount):
     """Verify funds in account"""
@@ -125,7 +137,14 @@ def verify_funds(acct_number, amount):
         return 1
     else:
         return 0
-
+		
+def verify_transfer_funds(acct_num_from, amount):
+    """Verify funds in account for a transfer"""
+    balance_from = compute_balance(acct_num_from)
+    if amount <= balance_from:
+        return 1
+    else:
+        return 0
 
 def deposit(acct_number, amount):
     """Deposit into account"""
