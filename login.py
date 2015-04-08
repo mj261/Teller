@@ -55,7 +55,32 @@ def create_user(username, password, email, name):
     cursor.execute(query)
     return user_number
 
-
+def create_user_account(username, account_type):
+	"""creates a new account for an established user"""
+	
+	account_number = 0
+	check = 1
+	while check == 1:
+		rng = random.SystemRandom()
+		account_number = rng.randint(1000000, 9999999)
+		
+		conn = conn_db.connect()
+		cursor = conn.cursor()
+		query = """SELECT EXISTS(SELECT * FROM Accounts WHERE Acct_Number = '{0}') AS Does_Exist"""\
+			.format(account_number)
+		cursor.execute(query)
+		for does_exist in cursor:
+			check = does_exist
+		conn_db.close_connection(conn)
+		
+	conn = conn_db.connect()
+	cursor = conn.cursor()
+	query = """INSERT INTO Accounts VALUES ('{0}', '{1}', '{2}')"""\
+		.format(username, account_number, account_type)
+	cursor.execute(query)
+	return account_number
+	
+	
 def encrypt_password(clear_password):
     """Password Encryption"""
     encrypted_password = pbkdf2_sha256.encrypt(clear_password, rounds=200000, salt_size=16)

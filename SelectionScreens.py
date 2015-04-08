@@ -707,7 +707,23 @@ def user_home(username):
                 amount = int(amount)
             transactions.transfer(acct_num_from, acct_num_to, amount)
         elif selection == 4:  # add function calls here
-            pass
+             
+			account_type = ""
+			while (account_type != "1" and account_type != "2" and account_type != "3"):
+				print "Please select what type of account to create:\n\n"
+				print "1. Checking"
+				print "2. Savings"
+				print "3. Cancel"
+				account_type = raw_input()
+			if(account_type == "3"):
+				user_home(username)
+			elif(account_type == "1"):
+				account_type = "C"
+			elif(account_type == "2"):
+				account_type = "S"	
+			account_num = login.create_user_account(username, account_type)
+			print "New account created! Account number: "+str(account_num)
+			
         elif selection == 5:  # add function calls here
             print "Please verify your username and password"
             user_username = raw_input("Please enter your username:  ")
