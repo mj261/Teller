@@ -111,7 +111,7 @@ def withdraw(acct_number, amount):
     conn = conn_db.connect()
     cursor = conn.cursor()
     query = """INSERT INTO `Transactions`(`Acct_Number`, `Amount`, `Time`) VALUES
-        ('{0}','{1}','{2}')""".format(acct_number, amount, epoch)
+        ('{0}','{1}','{2}')""".format(acct_number, -amount, epoch)
     cursor.execute(query)
     conn_db.close_connection(conn)
 
