@@ -286,6 +286,7 @@ def teller_home(teller_name, teller_number, currency):
                     currency = 'usd'
                 teller_home(teller_name, teller_number, currency)
             elif selection == 6:
+                print "\n\n"
                 home_screen()
 
 
@@ -316,10 +317,13 @@ def user_home(username):
 			print "###                                               ###"
 			print "#####################################################\n\n"
 		elif(selection == 1): #add function calls here
-			account_num = get_user_account_num(username)
-			data = get_account_info(account_num)
+			account_num = transactions.get_user_account_num(username)
+			data = transactions.get_account_info(account_num)
 			for row in data:
-				print row
+				for item in row:
+					print item 
+					print " "
+				print "\n"
 			print "\n\n\n"
 		elif(selection == 2): #add function calls here
 			pass
