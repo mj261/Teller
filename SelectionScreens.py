@@ -317,14 +317,13 @@ def user_home(username):
 			print "###                                               ###"
 			print "#####################################################\n\n"
 		elif(selection == 1): #add function calls here
-			account_num = transactions.get_user_account_num(username)
-			data = transactions.get_account_info(account_num)
-			for row in data:
-				for item in row:
-					print item 
-					print " "
-				print "\n"
-			print "\n\n\n"
+			savings_num = transactions.get_user_savings_num(username)
+			savings = transactions.compute_balance(savings_num)
+			checking_num = transactions.get_user_checking_num(username)
+			checking = transactions.compute_balance(checking_num)
+			print "Your SAVINGS account balance: ", savings
+			print "Your CHECKING account balance: ", checking
+			
 		elif(selection == 2): #add function calls here
 			pass
 		elif(selection == 3): #add function calls here
