@@ -677,7 +677,7 @@ def user_home(username):
         if selection.isdigit():
             selection = int(selection)
         if selection != 1 and selection != 2 and selection != 3 and selection != 4 \
-                and selection != 5 and selection != 6:
+                and selection != 5 and selection != 6 and selection != 7:
             print "\n\n#####################################################"
             print "###                                               ###"
             print "###         YOU ENTERED AN INVALID OPTION!        ###"
@@ -686,6 +686,7 @@ def user_home(username):
         elif selection == 1:  # add function calls here
             currency = 'usd'
             view_user_screen(currency)
+			
         elif selection == 2:  # add function calls here
             acct_num = raw_input("Please enter the account number you wish to"
                                  " withdraw from: ").strip()
@@ -741,6 +742,7 @@ def user_home(username):
             else:
                 new_username = raw_input("Change username to: ")
                 transactions.change_username(user_username, new_username)
+				
         elif selection == 6:
             print "Please verify your username and password"
             user_username = raw_input("Please enter your username:  ")
@@ -757,6 +759,7 @@ def user_home(username):
                         old_user()
             else:
                 transactions.change_user_password(username)
+				
         elif selection == 7:
             home_screen()
 
