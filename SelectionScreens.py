@@ -7,12 +7,8 @@ import sys
 import re
 import getpass
 from validate_email import validate_email
-<<<<<<< HEAD
-from passlib.context import CryptContext
-=======
 import login
 
->>>>>>> 4887cf948fb5d9f6a600217acf17b9fddb77dcca
 
 def home_screen():
     """Home Screen presented at Application Startup"""
@@ -297,14 +293,14 @@ def user_home():
 
 def password_check(password):
     """Check for password length"""
-    if len(password) < 6 or passoword.isupper() or password.islower() or password.isdigit():
+    if len(password) < 6 or password.isupper() or password.islower() or password.isdigit():
         print "Passwords need to be at least 6 long, with upper and lowercase characters, and a number"
         password = getpass.getpass("Please enter again: ")
         password_check(password)
-			
     else:
-		print "Password Saved"
-		return password
+        print "Password Saved"
+        return password
+
 
 def view_funds_screen(teller_name, teller_number, currency, user_type):
     """View account for tellers and admins"""
