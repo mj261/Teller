@@ -163,6 +163,21 @@ def change_username(username, new_username):
 	cursor.execute(query)
 	conn_db.close_connection(conn)
 	
+def change_user_password(username):
+    """Change account password"""
+    password = getpass.getpass("Please enter a password:  ")
+    password_verify = getpass.getpass("Please verify your password:  ")
+    while password != password_verify:
+        print "\n\nYour passwords did not match!\n\n"
+        password = getpass.getpass("Please enter a password:  ")
+        password_verify = getpass.getpass("Please verify your password:  ")
+    password = login.encrypt_password(password)
+    conn = conn_db.connect()
+    cursor = conn.cursor()
+    query = """UPDATE Users SET Password = '{0}' WHERE Username = '{1}'""".format(password, username)
+    cursor.execute(query)
+    conn_db.close_connection(conn)
+	
 	
 def currency_converter(currency_from, currency_to, currency_input):
     """Convert Currency"""
