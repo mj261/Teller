@@ -67,19 +67,32 @@ def get_username(acct_number):
     return username
 	
 
-def get_user_account_num(username):
+def get_user_savings_num(username):
 	"""return account number of user"""
-	account_num = 0
+	savings_acct = 0
 	conn = conn_db.connect()
 	cursor = conn.cursor()
-	query = """SELECT Acct_Number FROM Accounts WHERE User = '{0}' LIMIT 1""".format(username)
+	query = """SELECT Acct_Number FROM Accounts WHERE User = '{0}' and Type = 'S' LIMIT 1""".format(username)
 	cursor.execute(query)
 	data = cursor.fetchall()
 	for row in data:
-		username = row[0]
+		savings_acct = row[0]
 	conn_db.close_connection(conn)
-	return account_num
+	return savings_acct
 
+def get_user_checking_num(username):
+	"""return account number of user"""
+	checking_acct = 0
+	conn = conn_db.connect()
+	cursor = conn.cursor()
+	query = """SELECT Acct_Number FROM Accounts WHERE User = '{0}' and Type = 'C' LIMIT 1""".format(username)
+	cursor.execute(query)
+	data = cursor.fetchall()
+	for row in data:
+		checking_acct = row[0]
+	conn_db.close_connection(conn)
+	return checking_acct
+	
 def alternate_accounts(username, acct_number):
     """Find alternate accounts"""
     conn = conn_db.connect()
