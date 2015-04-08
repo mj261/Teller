@@ -694,7 +694,16 @@ def user_home(username):
 				amount = int(amount)
 			transactions.withdraw(acct_num, amount)
         elif selection == 3:  # add function calls here
-            pass
+            acct_num_from = raw_input("Account number to transfer from: ")
+            if acct_num_from.isdigit():
+                acct_num_from = int(acct_num_from)
+            acct_num_to = raw_input("Account number to transfer to: ")
+            if acct_num_to.isdigit():
+                acct_num_to = int(acct_num_to)
+            amount = raw_input("How much would you like to transfer: ")
+            if amount.isdigit():
+                amount = int(amount)
+            transactions.transfer(acct_num_from, acct_num_to, amount)
         elif selection == 4:  # add function calls here
             pass
         elif selection == 5:  # add function calls here
