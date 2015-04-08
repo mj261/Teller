@@ -21,6 +21,7 @@ def teller_login(teller_number):
 
 def create_user(username, password, email, name):
     """Create a new user"""
+    password = encrypt_password(password)
     conn = conn_db.connect()
     cursor = conn.cursor()
     password = encrypt_password(password)
@@ -89,7 +90,6 @@ def user_login(username, password):
         cursor.close()
         conn_db.close_connection(conn)
         return user_name
-
 
 
 def admin_login(username, password):
