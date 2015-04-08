@@ -11,14 +11,12 @@ from passlib.context import CryptContext
 import login
 
 
-##TOC
+# #TOC
 # All roles          Line 
 # System Admin       Line
 # Teller             Line
 # User               Line
 
-
-##########################################################################################################################
 ##All users
 def home_screen():
     """Home Screen presented at Application Startup"""
@@ -58,7 +56,8 @@ def home_screen():
     elif selection == "quit" or selection == "exit":
         sys.exit(0)
 
-##########################################################################################################################
+
+###################################################
 ##System Admin Functions
 def system_admin():
     """System Admin Welcome Screen"""
@@ -91,6 +90,7 @@ def system_admin():
         admin_name = login.admin_login(admin_username, admin_password)
     admin_home(admin_username, admin_name, 'usd')
 
+
 def create_admin(admin_username, admin_name, currency):
     """Create Admin by Admin"""
     print "\n\n#####################################################"
@@ -122,17 +122,18 @@ def create_admin(admin_username, admin_name, currency):
     success = login.create_new_admin(admin_username, new_admin_username, new_admin_name,
                                      new_admin_email, new_admin_pass)
     if success == 1:
-        print "System Administrator has been created for {0} with username: {1}"\
+        print "System Administrator has been created for {0} with username: {1}" \
             .format(new_admin_name, new_admin_username)
     else:
         print "User not created."
     raw_input("\nPress <enter> to continue")
     admin_home(admin_username, admin_name, currency)
 
+
 def admin_home(admin_username, admin_name, currency):
     """Home page for system admin after login"""
-    before_name = math.ceil((40-len(admin_name))/2)
-    after_name = math.floor((39-len(admin_name))/2)
+    before_name = math.ceil((40 - len(admin_name)) / 2)
+    after_name = math.floor((39 - len(admin_name)) / 2)
     before = ''
     after = ''
     while before_name > 0:
@@ -189,6 +190,7 @@ def admin_home(admin_username, admin_name, currency):
             elif selection == 6:
                 home_screen()
 
+
 def view_funds_screen(teller_name, teller_number, currency, user_type):
     """View account for tellers and admins"""
     print "\n\n#####################################################"
@@ -232,10 +234,10 @@ def view_funds_screen(teller_name, teller_number, currency, user_type):
             else:
                 account_type = "Savings"
             if currency == "usd":
-                print "\tAccount Number: {0}\tType: {1}\tBalance: ${2:.2f}"\
+                print "\tAccount Number: {0}\tType: {1}\tBalance: ${2:.2f}" \
                     .format(row[0], account_type, balance)
             else:
-                print "\tAccount Number: {0}\tType: {1}\tBalance: €{2:.2f}"\
+                print "\tAccount Number: {0}\tType: {1}\tBalance: €{2:.2f}" \
                     .format(row[0], account_type, balance)
     else:
         print "None"
@@ -244,6 +246,7 @@ def view_funds_screen(teller_name, teller_number, currency, user_type):
         teller_home(teller_name, teller_number, currency)
     elif user_type == 'Admin':
         admin_home(teller_name, teller_number, currency)
+
 
 def admin_modify_account(admin_username, admin_name, currency):
     """Admin modifying account"""
@@ -297,10 +300,10 @@ def admin_modify_account(admin_username, admin_name, currency):
             else:
                 account_type = "Savings"
             if currency == "usd":
-                print "\tAccount Number: {0}\tType: {1}\tBalance: ${2:.2f}"\
+                print "\tAccount Number: {0}\tType: {1}\tBalance: ${2:.2f}" \
                     .format(row[0], account_type, balance)
             else:
-                print "\tAccount Number: {0}\tType: {1}\tBalance: €{2:.2f}"\
+                print "\tAccount Number: {0}\tType: {1}\tBalance: €{2:.2f}" \
                     .format(row[0], account_type, balance)
     else:
         print "None"
@@ -331,7 +334,8 @@ def admin_modify_account(admin_username, admin_name, currency):
                 transactions.modify_account_password(admin_username, acct_number)
     admin_home(admin_username, admin_name, currency)
 
-##########################################################################################################################
+
+##############################################################
 ##Teller Functions
 def create_teller(admin_username, admin_name, currency):
     """Create New Teller"""
@@ -344,10 +348,11 @@ def create_teller(admin_username, admin_name, currency):
     while not all(x.isalpha() or x.isspace() for x in teller_name):
         teller_name = raw_input("Please enter a valid Teller's name:  ")
     teller_number = login.create_new_teller(teller_name, admin_username)
-    print "The teller number for {0} is {1}.  Please make note of this number!"\
+    print "The teller number for {0} is {1}.  Please make note of this number!" \
         .format(teller_name, teller_number)
     raw_input("\nPress <enter> to continue")
     admin_home(admin_username, admin_name, currency)
+
 
 def bank_teller():
     """Bank Teller Welcome Screen"""
@@ -367,10 +372,11 @@ def bank_teller():
     if teller_name != '':
         teller_home(teller_name, teller_number, 'usd')
 
+
 def teller_home(teller_name, teller_number, currency):
     """Home page for teller after login"""
-    before_name = math.ceil((40-len(teller_name))/2)
-    after_name = math.floor((39-len(teller_name))/2)
+    before_name = math.ceil((40 - len(teller_name)) / 2)
+    after_name = math.floor((39 - len(teller_name)) / 2)
     before = ''
     after = ''
     while before_name > 0:
@@ -428,6 +434,7 @@ def teller_home(teller_name, teller_number, currency):
                 print "\n\n"
                 home_screen()
 
+
 ## view_funds_screen() is implement in the System Admin functions above, it is also called by the teller role
 
 def withdrawal_screen(teller_name, teller_number, currency):
@@ -460,22 +467,23 @@ def withdrawal_screen(teller_name, teller_number, currency):
     if funds_available == 1:
         transactions.withdraw(acct_number, -amount)
         if currency == "usd":
-            print "\n\n${0:.2f} has been withdrawn from account number: {1}"\
+            print "\n\n${0:.2f} has been withdrawn from account number: {1}" \
                 .format(amount, acct_number)
         else:
             amount = transactions.currency_converter('usd', 'eur', amount)
-            print "\n\n€{0:.2f} has been withdrawn from account number: {1}"\
+            print "\n\n€{0:.2f} has been withdrawn from account number: {1}" \
                 .format(amount, acct_number)
     else:
         if currency == "usd":
-            print "\n\nThere are not available funds to withdraw ${0:.2f} from account number {1}"\
+            print "\n\nThere are not available funds to withdraw ${0:.2f} from account number {1}" \
                 .format(amount, acct_number)
         else:
             amount = transactions.currency_converter('usd', 'eur', amount)
-            print "\n\nThere are not available funds to withdraw €{0:.2f} from account number {1}"\
+            print "\n\nThere are not available funds to withdraw €{0:.2f} from account number {1}" \
                 .format(amount, acct_number)
     raw_input("\nPress <enter> to continue")
     teller_home(teller_name, teller_number, currency)
+
 
 def deposit_screen(teller_name, teller_number, currency):
     """Deposit screen for tellers"""
@@ -511,6 +519,7 @@ def deposit_screen(teller_name, teller_number, currency):
         print "\n\n€{0:.2f} has been deposited into account number: {1}".format(amount, acct_number)
     raw_input("\nPress <enter> to continue")
     teller_home(teller_name, teller_number, currency)
+
 
 def transfer_screen(teller_name, teller_number, currency):
     """Transfer screen for tellers"""
@@ -561,16 +570,17 @@ def transfer_screen(teller_name, teller_number, currency):
                   "account number: {2}".format(amount, acct_number_withdraw, acct_number_deposit)
     else:
         if currency == 'usd':
-            print"\n\nThere are not available funds to withdraw ${0:.2f} from account number {1}"\
+            print"\n\nThere are not available funds to withdraw ${0:.2f} from account number {1}" \
                 .format(amount, acct_number_withdraw)
         else:
             amount = transactions.currency_converter('usd', 'eur', amount)
-            print"\n\nThere are not available funds to withdraw €{0:.2f} from account number {1}"\
+            print"\n\nThere are not available funds to withdraw €{0:.2f} from account number {1}" \
                 .format(amount, acct_number_withdraw)
     raw_input("\nPress <enter> to continue")
-    teller_home(teller_name, teller_number, currency)    
+    teller_home(teller_name, teller_number, currency)
 
-##########################################################################################################################
+
+###############################################################
 ##User Functions
 def user():
     """User Welcome Screen"""
@@ -587,6 +597,7 @@ def user():
             new_user()
         elif user_selection == 'n':
             old_user()
+
 
 def new_user():
     """Screen for new users"""
@@ -616,67 +627,77 @@ def new_user():
         print "There was an error! Please try again."
         home_screen()
 
+
 def old_user():
-	"""Screen for old users to login"""
-	login_result = ''
-    
-	user_username = raw_input("Please enter your username:  ")
-	user_password = getpass.getpass("Please enter your password:  ")
-	login_result = login.user_login(user_username, user_password)
-	user_input = ""
-	if login_result == '':
-		while user_input != "y" and user_input != "n":
-			user_input = raw_input("incorrect login information. Try Again? (y)es or (n)o:  ").lower()
-		if user_input == "n":
-			home_screen()
-		elif user_input == "y":
-			old_user()
-	else:
-		user_home(user_username)
+    """Screen for old users to login"""
+    user_username = raw_input("Please enter your username:  ")
+    user_password = getpass.getpass("Please enter your password:  ")
+    login_result = login.user_login(user_username, user_password)
+    user_input = ""
+    if login_result == '':
+        while user_input != "y" and user_input != "n":
+            user_input = raw_input("incorrect login information. Try Again? (y)es or (n)o:  ").lower()
+        if user_input == "n":
+            home_screen()
+        elif user_input == "y":
+            old_user()
+    else:
+        user_home(user_username)
+
 
 def user_home(username):
-	"""User home page after login"""
-	print "\n\n#####################################################"
-	print "###                                               "
-	print "###         Welcome " +username"+!				 "
-	print "###                                               "
-	print "#####################################################\n\n"
-			
-	while True:		
-		print "Please select from the following options:\n\n"
-		print "1. View Account"
-		print "2. Withdrawal"
-		print "3. Transfer"
+    """User home page after login"""
+    before_name = math.ceil((40 - len(username)) / 2)
+    after_name = math.floor((39 - len(username)) / 2)
+    before = ''
+    after = ''
+    while before_name > 0:
+        before += ' '
+        before_name -= 1
+    while after_name > 0:
+        after += ' '
+        after_name -= 1
+
+    print "\n\n#####################################################"
+    print "###                                               ###"
+    print "###{0}Welcome {1}{2}###".format(before, username, after)
+    print "###                                               ###"
+    print "#####################################################\n\n"
+    while True:
+        print "Please select from the following options:\n\n"
+        print "1. View Account"
+        print "2. Withdrawal"
+        print "3. Transfer"
         print "4. Open New Account"
-		print "5. Change Username"
-		print "6. Change Password"
-		print "7. Logout\n\n"
-		selection = raw_input("Please enter your selection:  ").strip()
-		if selection.isdigit():
-			selection = int(selection)
-		if selection != 1 and selection != 2 and selection != 3 and selection != 4 \
-			and selection != 5 and selection != 6:
-			print "\n\n#####################################################"
-			print "###                                               ###"
-			print "###         YOU ENTERED AN INVALID OPTION!        ###"
-			print "###                                               ###"
-			print "#####################################################\n\n"
-		elif(selection == 1): #add function calls here
-			user_view_accounts(username)
-			
-		elif(selection == 2): #add function calls here
-			user_withdrawl_screen()
-		elif(selection == 3): #add function calls here
-			pass
-		elif(selection == 4): #add function calls here
-			pass
-		elif(selection == 5): #add function calls here
-			pass
-		elif(selection == 6): 
+        print "5. Change Username"
+        print "6. Change Password"
+        print "7. Logout\n\n"
+        selection = raw_input("Please enter your selection:  ").strip()
+        if selection.isdigit():
+            selection = int(selection)
+        if selection != 1 and selection != 2 and selection != 3 and selection != 4 \
+                and selection != 5 and selection != 6:
+            print "\n\n#####################################################"
+            print "###                                               ###"
+            print "###         YOU ENTERED AN INVALID OPTION!        ###"
+            print "###                                               ###"
+            print "#####################################################\n\n"
+        elif selection == 1:  # add function calls here
+            user_view_accounts(username)
+        elif selection == 2:  # add function calls here
+            user_withdrawl_screen()
+        elif selection == 3:  # add function calls here
             pass
-        elif(selection == 7):
-			home_screen()
-		
+        elif selection == 4:  # add function calls here
+            pass
+        elif selection == 5:  # add function calls here
+            pass
+        elif selection == 6:
+            pass
+        elif selection == 7:
+            home_screen()
+
+
 ##This code is wrong, a user can more than 2 accounts
 def user_view_accounts(username):
     savings_num = transactions.get_user_savings_num(username)
@@ -686,7 +707,7 @@ def user_view_accounts(username):
     print "Your SAVINGS account balance: ", savings
     print "Your CHECKING account balance: ", checking
 
-def
+
 def password_check(password):
     """Check for password length"""
     if len(password) < 6 or password.isupper() or password.islower() or password.isdigit():

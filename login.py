@@ -30,6 +30,8 @@ def create_user(username, password, email, name):
     cursor.execute(query)
     user_number = 0
     check = 1
+    checking_number = 0
+    saving_number = 0
     while check == 1:
         rng = random.SystemRandom()
         checking_number = rng.randint(1000000, 9999999)
@@ -46,13 +48,12 @@ def create_user(username, password, email, name):
     conn = conn_db.connect()
     cursor = conn.cursor()
     query = """INSERT INTO Accounts VALUES ('{0}', '{1}', '{2}')"""\
-        .format(username, checking_number,'C')
+        .format(username, checking_number, 'C')
     cursor.execute(query)
     query = """INSERT INTO Accounts VALUES ('{0}', '{1}', '{2}')"""\
-        .format(username, saving_number,'S')
+        .format(username, saving_number, 'S')
     cursor.execute(query)
     return user_number
-
 
 
 def encrypt_password(clear_password):

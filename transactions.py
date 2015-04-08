@@ -80,6 +80,7 @@ def get_user_savings_num(username):
     conn_db.close_connection(conn)
     return savings_acct
 
+
 def get_user_checking_num(username):
     """return account number of user"""
     checking_acct = 0
