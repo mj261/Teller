@@ -295,24 +295,37 @@ def user_home():
     print "###                                               ###"
     print "#####################################################\n\n"
 			
-    print "Please select from the following options:\n\n"
-    print "1. View Account"
-    print "2. Withdrawal"
-    print "3. Transfer"
-    print "4. Change Username"
-    print "5. Change Password"
-    print "6. Logout\n\n"
-    selection = raw_input("Please enter your selection:  ").strip()
-    if selection.isdigit():
-        selection = int(selection)
-    if selection != 1 and selection != 2 and selection != 3 and selection != 4 \
-        and selection != 5 and selection != 6:
-        print "\n\n#####################################################"
-        print "###                                               ###"
-        print "###         YOU ENTERED AN INVALID OPTION!        ###"
-        print "###                                               ###"
-        print "#####################################################\n\n"
-	
+	while True:		
+		print "Please select from the following options:\n\n"
+		print "1. View Account"
+		print "2. Withdrawal"
+		print "3. Transfer"
+		print "4. Change Username"
+		print "5. Change Password"
+		print "6. Logout\n\n"
+		selection = raw_input("Please enter your selection:  ").strip()
+		if selection.isdigit():
+			selection = int(selection)
+		if selection != 1 and selection != 2 and selection != 3 and selection != 4 \
+			and selection != 5 and selection != 6:
+			print "\n\n#####################################################"
+			print "###                                               ###"
+			print "###         YOU ENTERED AN INVALID OPTION!        ###"
+			print "###                                               ###"
+			print "#####################################################\n\n"
+		elif(selection == 1): #add function calls here
+			pass
+		elif(selection == 2): #add function calls here
+			pass
+		elif(selection == 3): #add function calls here
+			pass
+		elif(selection == 4): #add function calls here
+			pass
+		elif(selection == 5): #add function calls here
+			pass
+		elif(selection == 6): #add function calls here
+			pass
+		
 
 
 def password_check(password):
