@@ -289,7 +289,7 @@ def teller_home(teller_name, teller_number, currency):
                 home_screen()
 
 
-def user_home(username, password):
+def user_home(username):
 	"""User home page after login"""
 	print "\n\n#####################################################"
 	print "###                                               ###"
