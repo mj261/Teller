@@ -6,5 +6,3 @@ __author__ = 'Matthew Jones', 'Daniel Downs', 'Jennifer Jozefiak', \
 import SelectionScreens
 
 SelectionScreens.home_screen()
-
-# SelectionScreens.withdrawal_screen('Snow White', 1234567890)

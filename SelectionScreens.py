@@ -9,12 +9,12 @@ import getpass
 from validate_email import validate_email
 import login
 
-
 # #TOC
-# All roles          Line 
+# All roles          Line
 # System Admin       Line
 # Teller             Line
 # User               Line
+
 
 ##All users
 def home_screen():
@@ -434,7 +434,8 @@ def teller_home(teller_name, teller_number, currency):
                 home_screen()
 
 
-## view_funds_screen() is implement in the System Admin functions above, it is also called by the teller role
+## view_funds_screen() is implement in the System Admin functions above,
+# it is also called by the teller role
 
 def withdrawal_screen(teller_name, teller_number, currency):
     """Withdrawal screen for tellers"""
@@ -635,7 +636,8 @@ def old_user():
     user_input = ""
     if login_result == '':
         while user_input != "y" and user_input != "n":
-            user_input = raw_input("incorrect login information. Try Again? (y)es or (n)o:  ").lower()
+            user_input = raw_input("incorrect login information. Try Again? "
+                                   "(y)es or (n)o:  ").lower()
         if user_input == "n":
             home_screen()
         elif user_input == "y":
@@ -685,7 +687,8 @@ def user_home(username):
             currency = 'usd'
             view_user_screen(currency)
         elif selection == 2:  # add function calls here
-            acct_num = raw_input("Please enter the account number you wish to withdraw from: ").strip()
+            acct_num = raw_input("Please enter the account number you wish to"
+                                 " withdraw from: ").strip()
             if acct_num.isdigit():
                 acct_num = int(acct_num)
             amount = raw_input("Please enter amount: ")
@@ -713,7 +716,8 @@ def user_home(username):
             user_input = ""
             if login_result == '':
                 while user_input != "y" and user_input != "n":
-                    user_input = raw_input("incorrect login information. Try Again? (y)es or (n)o:  ").lower()
+                    user_input = raw_input("incorrect login information. "
+                                           "Try Again? (y)es or (n)o:  ").lower()
                     if user_input == "n":
                         home_screen()
                     elif user_input == "y":
@@ -729,7 +733,8 @@ def user_home(username):
             user_input = ""
             if login_result == '':
                 while user_input != "y" and user_input != "n":
-                    user_input = raw_input("incorrect login information. Try Again? (y)es or (n)o:  ").lower()
+                    user_input = raw_input("incorrect login information. "
+                                           "Try Again? (y)es or (n)o:  ").lower()
                     if user_input == "n":
                         home_screen()
                     elif user_input == "y":
@@ -795,7 +800,8 @@ def view_user_screen(currency):
 def password_check(password):
     """Check for password length"""
     if len(password) < 6 or password.isupper() or password.islower() or password.isdigit():
-        print "Passwords need to be at least 6 long, with upper and lowercase characters, and a number"
+        print "Passwords need to be at least 6 long, with upper and " \
+              "lowercase characters, and a number"
         password = getpass.getpass("Please enter again: ")
         password_check(password)
     else:

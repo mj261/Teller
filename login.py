@@ -64,7 +64,6 @@ def encrypt_password(clear_password):
 
 def user_login(username, password):
     """User Login"""
-    user_name = ''
     password_hash = ''
     conn = conn_db.connect()
     cursor = conn.cursor()
@@ -82,6 +81,7 @@ def user_login(username, password):
         user_name = ''
         return user_name
     else:
+        user_name = ''
         conn = conn_db.connect()
         cursor = conn.cursor()
         query = """SELECT Name FROM Users WHERE Username = '{0}' LIMIT 1""".format(username)
@@ -94,7 +94,7 @@ def user_login(username, password):
 
 
 def admin_login(username, password):
-    admin_name = ''
+    """Admin Login"""
     password_hash = ''
     conn = conn_db.connect()
     cursor = conn.cursor()
@@ -112,6 +112,7 @@ def admin_login(username, password):
         admin_name = ''
         return admin_name
     else:
+        admin_name = ''
         conn = conn_db.connect()
         cursor = conn.cursor()
         query = """SELECT Name FROM Admins WHERE Username = '{0}' LIMIT 1""".format(username)

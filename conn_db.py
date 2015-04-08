@@ -21,13 +21,10 @@ def connect():
         }
         conn = mysql.connector.connect(**config)
         if conn.is_connected():
-            #print "Connected"
             return conn
         else:
             print "No Database Connection"
             SelectionScreens.home_screen()
-
-
     except Error as error:
         print "No Database Connection"
         print "ERROR: {0}".format(error)
@@ -37,5 +34,3 @@ def connect():
 def close_connection(conn):
     """Close Database Connection"""
     conn.close()
-    # if not conn.is_connected():
-    #     print ("Connection Closed")
