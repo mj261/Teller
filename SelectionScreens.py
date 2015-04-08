@@ -683,9 +683,16 @@ def user_home(username):
             print "###                                               ###"
             print "#####################################################\n\n"
         elif selection == 1:  # add function calls here
-            user_view_accounts(username)
+			currency = 'usd'
+			view_user_screen(username, currency)
         elif selection == 2:  # add function calls here
-            user_withdrawl_screen()
+			acct_num = raw_input("Please enter the account number you wish to withdraw from: ").strip()
+			if acct_num.isdigit():
+				acct_num = int(acct_num)
+			amount = raw_input("Please enter amount: ")
+			if amount.isdigit():
+				amount = int(amount)
+			transactions.withdraw(acct_num, amount)
         elif selection == 3:  # add function calls here
             pass
         elif selection == 4:  # add function calls here
@@ -698,14 +705,59 @@ def user_home(username):
             home_screen()
 
 
-##This code is wrong, a user can more than 2 accounts
-def user_view_accounts(username):
-    savings_num = transactions.get_user_savings_num(username)
-    savings = transactions.compute_balance(savings_num)
-    checking_num = transactions.get_user_checking_num(username)
-    checking = transactions.compute_balance(checking_num)
-    print "Your SAVINGS account balance: ", savings
-    print "Your CHECKING account balance: ", checking
+
+def view_user_screen(username, currency):
+    """View account for tellers and admins"""
+    print "\n\n#####################################################"
+    print "###                                               ###"
+    print "###                 View Account                  ###"
+    print "###                                               ###"
+    print "#####################################################\n\n"
+    acct_number = raw_input("Please enter an account number:  ")
+    if acct_number.isdigit():
+        acct_exists = transactions.valid_account(acct_number)
+    else:
+        acct_exists = 0
+    while acct_exists == 0:
+        print "That is not a valid account number!"
+        acct_number = raw_input("Please enter an account number:  ")
+        if acct_number.isdigit():
+            acct_exists = transactions.valid_account(int(acct_number.strip()))
+    name = transactions.account_owner(acct_number)
+    username = transactions.get_username(acct_number)
+    balance = transactions.compute_balance(acct_number)
+    if currency == "eur":
+        balance = transactions.currency_converter('usd', 'eur', balance)
+    other_accounts = transactions.alternate_accounts(username, acct_number)
+    print "\n\nAccount Number: {0}".format(acct_number)
+    print "Account Owner: {0}".format(name)
+    print "Username: {0}".format(username)
+    if currency == "usd":
+        print "Account Number {0} has a balance of ${1:.2f}".format(acct_number, balance)
+    else:
+        balance = float(balance)
+        print "Account Number {0} has a balance of €{1:.2f}".format(acct_number, balance)
+    print "Alternate Accounts:"
+    if other_accounts != '':
+        for row in other_accounts:
+            balance = transactions.compute_balance(row[0])
+            if currency == "eur":
+                balance = transactions.currency_converter('usd', 'eur', balance)
+                balance = float(balance)
+            if row[1] == "C":
+                account_type = "Checking"
+            else:
+                account_type = "Savings"
+            if currency == "usd":
+                print "\tAccount Number: {0}\tType: {1}\tBalance: ${2:.2f}" \
+                    .format(row[0], account_type, balance)
+            else:
+                print "\tAccount Number: {0}\tType: {1}\tBalance: €{2:.2f}" \
+                    .format(row[0], account_type, balance)
+    else:
+        print "None"
+    
+
 
 
 def password_check(password):
