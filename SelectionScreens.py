@@ -118,6 +118,7 @@ def user():
             old_user()
 
 
+#never asks user
 def new_user():
     """Screen for new users"""
     print "Welcome New User!"
@@ -132,11 +133,11 @@ def new_user():
         if email_check == 1:
             print "Email Address is in use. You already have an account!"
     while username_check != 0:
-        username = raw_input("Please select your username: ")
+        username = raw_input("Please enter your username: ")
         username_check = login.check_username(username)
         if username_check == 1:
             print "Username is in use.  Please select another!"
-    password = getpass.getpass("Please select your password: ")
+    password = getpass.getpass("Please enter your password: ")
 
     password = password_check(password)
     success = login.create_user(username, password, email, name)
@@ -162,7 +163,7 @@ def old_user():
             if user_input == "n":
                 home_screen()
         else:
-            user_home()
+            user_home(user_username, user_password)
 
 
 def admin_home(admin_username, admin_name, currency):
@@ -287,13 +288,13 @@ def teller_home(teller_name, teller_number, currency):
                 home_screen()
 
 
-def user_home():
-    """User home page after login"""
-    print "\n\n#####################################################"
-    print "###                                               ###"
-    print "###         Welcome User!				         ###"
-    print "###                                               ###"
-    print "#####################################################\n\n"
+def user_home(username, password):
+	"""User home page after login"""
+	print "\n\n#####################################################"
+	print "###                                               ###"
+	print "###         Welcome User!				         ###"
+	print "###                                               ###"
+	print "#####################################################\n\n"
 			
 	while True:		
 		print "Please select from the following options:\n\n"
@@ -314,7 +315,11 @@ def user_home():
 			print "###                                               ###"
 			print "#####################################################\n\n"
 		elif(selection == 1): #add function calls here
-			pass
+			account_num = get_user_account_num(username)
+			data = get_account_info(account_num)
+			for row in data:
+				print row
+			print "\n\n\n"
 		elif(selection == 2): #add function calls here
 			pass
 		elif(selection == 3): #add function calls here
@@ -324,7 +329,7 @@ def user_home():
 		elif(selection == 5): #add function calls here
 			pass
 		elif(selection == 6): #add function calls here
-			pass
+			home_screen()
 		
 
 

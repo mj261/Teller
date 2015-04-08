@@ -65,7 +65,20 @@ def get_username(acct_number):
         username = row[0]
     conn_db.close_connection(conn)
     return username
+	
 
+def get_user_account_num(username):
+	"""return account number of user"""
+	account_num = 0
+	conn = conn_db.connect()
+	cursor = conn.cursor()
+	query = """SELECT Acct_Number FROM Accounts WHERE User = '{0}' LIMIT 1""".format(username)
+	cursor.execute(query)
+	data = cursor.fetchall()
+	for row in data:
+		username = row[0]
+	conn_db.close_connection(conn)
+	return account_num
 
 def alternate_accounts(username, acct_number):
     """Find alternate accounts"""
