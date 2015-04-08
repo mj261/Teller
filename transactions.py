@@ -156,7 +156,14 @@ def deposit(acct_number, amount):
     cursor.execute(query)
     conn_db.close_connection(conn)
 
-
+def change_username(username, new_username):
+	conn = conn_db.connect()
+	cursor = conn.cursor()
+	query = """UPDATE Users SET Username = '{0}' WHERE Username = '{1}'""".format(new_username, username)
+	cursor.execute(query)
+	conn_db.close_connection(conn)
+	
+	
 def currency_converter(currency_from, currency_to, currency_input):
     """Convert Currency"""
     yql_base_url = "https://query.yahooapis.com/v1/public/yql"
