@@ -11,7 +11,6 @@ from passlib.context import CryptContext
 import login
 
 
-
 def home_screen():
     """Home Screen presented at Application Startup"""
     print "#####################################################"
@@ -290,7 +289,30 @@ def teller_home(teller_name, teller_number, currency):
 
 def user_home():
     """User home page after login"""
-    print "User Home Screen"
+    print "\n\n#####################################################"
+    print "###                                               ###"
+    print "###         Welcome User!				         ###"
+    print "###                                               ###"
+    print "#####################################################\n\n"
+			
+    print "Please select from the following options:\n\n"
+    print "1. View Account"
+    print "2. Withdrawal"
+    print "3. Transfer"
+    print "4. Change Username"
+    print "5. Change Password"
+    print "6. Logout\n\n"
+    selection = raw_input("Please enter your selection:  ").strip()
+    if selection.isdigit():
+        selection = int(selection)
+    if selection != 1 and selection != 2 and selection != 3 and selection != 4 \
+        and selection != 5 and selection != 6:
+        print "\n\n#####################################################"
+        print "###                                               ###"
+        print "###         YOU ENTERED AN INVALID OPTION!        ###"
+        print "###                                               ###"
+        print "#####################################################\n\n"
+	
 
 
 def password_check(password):
@@ -299,10 +321,13 @@ def password_check(password):
         print "Passwords need to be at least 6 long, with upper and lowercase characters, and a number"
         password = getpass.getpass("Please enter again: ")
         password_check(password)
-			
     else:
-		print "Password Saved"
-		return password
+        print "Password Saved"
+        return password
+
+
+
+    
 
 def view_funds_screen(teller_name, teller_number, currency, user_type):
     """View account for tellers and admins"""

@@ -23,10 +23,35 @@ def create_user(username, password, email, name):
     """Create a new user"""
     conn = conn_db.connect()
     cursor = conn.cursor()
+    password = encrypt_password(password)
     query = """INSERT INTO Users VALUES ('{0}', '{1}', '{2}', '{3}')"""\
         .format(name, username, password, email)
     cursor.execute(query)
-    return 1
+    user_number = 0
+    check = 1
+    while check == 1:
+        rng = random.SystemRandom()
+        checking_number = rng.randint(1000000, 9999999)
+        saving_number = rng.randint(1000000, 9999999)
+        conn = conn_db.connect()
+        cursor = conn.cursor()
+        query = """SELECT EXISTS(SELECT * FROM Accounts WHERE Acct_Number = '{0}') AS Does_Exist"""\
+            .format(user_number)
+        cursor.execute(query)
+        for does_exist in cursor:
+            check = does_exist
+        conn_db.close_connection(conn)
+        check = int(''.join(map(str, check)))
+    conn = conn_db.connect()
+    cursor = conn.cursor()
+    query = """INSERT INTO Accounts VALUES ('{0}', '{1}', '{2}')"""\
+        .format(username, checking_number,'C')
+    cursor.execute(query)
+    query = """INSERT INTO Accounts VALUES ('{0}', '{1}', '{2}')"""\
+        .format(username, saving_number,'S')
+    cursor.execute(query)
+    return user_number
+
 
 
 def encrypt_password(clear_password):
