@@ -118,7 +118,7 @@ def user():
             old_user()
 
 
-#never asks user
+
 def new_user():
     """Screen for new users"""
     print "Welcome New User!"
@@ -149,21 +149,22 @@ def new_user():
 
 
 def old_user():
-    """Screen for old users to login"""
-    login_result = ''
-    while login_result == '':
-        user_username = raw_input("Please enter your username:  ")
-        user_password = getpass.getpass("Please enter your password:  ")
-        login_result = login.user_login(user_username, user_password)
-        user_input = ""
-        if login_result == '':
-            while user_input != "y" and user_input != "n":
-                user_input = raw_input("incorrect login information. Try Again? "
-                                       "(y)es or (n)o").lower()
-            if user_input == "n":
-                home_screen()
-        else:
-            user_home(user_username, user_password)
+	"""Screen for old users to login"""
+	login_result = ''
+    
+	user_username = raw_input("Please enter your username:  ")
+	user_password = getpass.getpass("Please enter your password:  ")
+	login_result = login.user_login(user_username, user_password)
+	user_input = ""
+	if login_result == '':
+		while user_input != "y" and user_input != "n":
+			user_input = raw_input("incorrect login information. Try Again? (y)es or (n)o:  ").lower()
+		if user_input == "n":
+			home_screen()
+		elif user_input == "y":
+			old_user()
+	else:
+		user_home(user_username)
 
 
 def admin_home(admin_username, admin_name, currency):
@@ -328,7 +329,7 @@ def user_home(username, password):
 			pass
 		elif(selection == 5): #add function calls here
 			pass
-		elif(selection == 6): #add function calls here
+		elif(selection == 6): 
 			home_screen()
 		
 
