@@ -707,7 +707,21 @@ def user_home(username):
         elif selection == 4:  # add function calls here
             pass
         elif selection == 5:  # add function calls here
-            pass
+            print "Please verify your username and password"
+            user_username = raw_input("Please enter your username:  ")
+            user_password = getpass.getpass("Please enter your password:  ")
+            login_result = login.user_login(user_username, user_password)
+            user_input = ""
+            if login_result == '':
+                while user_input != "y" and user_input != "n":
+                    user_input = raw_input("incorrect login information. Try Again? (y)es or (n)o:  ").lower()
+                    if user_input == "n":
+                        home_screen()
+                    elif user_input == "y":
+                        old_user()
+            else:
+                new_username =  raw_input("Change username to: ")
+                transactions.change_username(user_username, new_username)
         elif selection == 6:
             pass
         elif selection == 7:
