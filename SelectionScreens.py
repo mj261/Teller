@@ -7,7 +7,6 @@ import sys
 import re
 import getpass
 from validate_email import validate_email
-from passlib.context import CryptContext
 import login
 
 
@@ -683,16 +682,16 @@ def user_home(username):
             print "###                                               ###"
             print "#####################################################\n\n"
         elif selection == 1:  # add function calls here
-			currency = 'usd'
-			view_user_screen(username, currency)
+            currency = 'usd'
+            view_user_screen(currency)
         elif selection == 2:  # add function calls here
-			acct_num = raw_input("Please enter the account number you wish to withdraw from: ").strip()
-			if acct_num.isdigit():
-				acct_num = int(acct_num)
-			amount = raw_input("Please enter amount: ")
-			if amount.isdigit():
-				amount = int(amount)
-			transactions.withdraw(acct_num, amount)
+            acct_num = raw_input("Please enter the account number you wish to withdraw from: ").strip()
+            if acct_num.isdigit():
+                acct_num = int(acct_num)
+            amount = raw_input("Please enter amount: ")
+            if amount.isdigit():
+                amount = int(amount)
+            transactions.withdraw(acct_num, amount)
         elif selection == 3:  # add function calls here
             acct_num_from = raw_input("Account number to transfer from: ")
             if acct_num_from.isdigit():
@@ -720,7 +719,7 @@ def user_home(username):
                     elif user_input == "y":
                         old_user()
             else:
-                new_username =  raw_input("Change username to: ")
+                new_username = raw_input("Change username to: ")
                 transactions.change_username(user_username, new_username)
         elif selection == 6:
             print "Please verify your username and password"
@@ -741,8 +740,7 @@ def user_home(username):
             home_screen()
 
 
-
-def view_user_screen(username, currency):
+def view_user_screen(currency):
     """View account for tellers and admins"""
     print "\n\n#####################################################"
     print "###                                               ###"
@@ -792,8 +790,6 @@ def view_user_screen(username, currency):
                     .format(row[0], account_type, balance)
     else:
         print "None"
-    
-
 
 
 def password_check(password):
@@ -805,21 +801,3 @@ def password_check(password):
     else:
         print "Password Saved"
         return password
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
