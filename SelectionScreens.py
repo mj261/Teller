@@ -692,7 +692,7 @@ def user_home(username):
                 currency = raw_input("Currency:").strip()
                 if currency.isdigit():
                     currency = int(currency)
-                    if currency == 1
+                    if currency == 1:
                         currency = "usd"
                     else:
                         currency = "eur"
