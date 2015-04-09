@@ -690,6 +690,8 @@ def user_home(username):
                 print "1. USD"
                 print "2. Euro\n\n"
                 currency = raw_input("Currency:").strip()
+                if currency.isdigit():
+                    currency = int(currency)
                 if currency == 1 or currency == 2:
                     view_user_screen(currency)
                     flag = 0
