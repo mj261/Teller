@@ -683,9 +683,22 @@ def user_home(username):
             print "###         YOU ENTERED AN INVALID OPTION!        ###"
             print "###                                               ###"
             print "#####################################################\n\n"
-        elif selection == 1:  # add function calls here
-            currency = 'usd'
-            view_user_screen(currency)
+        elif selection == 1:
+            flag = 1
+            while flag:
+                print "Please select your preferred currency."
+                print "1. USD"
+                print "2. Euro\n\n"
+                currency = raw_input("Currency:").strip()
+                if currency == 1 or currency == 2:
+                    view_user_screen(currency)
+                    flag = 0
+                else:
+                    print "\n\n#####################################################"
+                    print "###                                               ###"
+                    print "###         YOU ENTERED AN INVALID OPTION!        ###"
+                    print "###                                               ###"
+                    print "#####################################################\n\n"
         elif selection == 2:  # add function calls here
             acct_num = raw_input("Please enter the account number you wish to"
                                  " withdraw from: ").strip()
