@@ -686,7 +686,6 @@ def user_home(username):
         elif selection == 1:  # add function calls here
             currency = 'usd'
             view_user_screen(currency)
-			
         elif selection == 2:  # add function calls here
             acct_num = raw_input("Please enter the account number you wish to"
                                  " withdraw from: ").strip()
@@ -708,23 +707,21 @@ def user_home(username):
                 amount = int(amount)
             transactions.transfer(acct_num_from, acct_num_to, amount)
         elif selection == 4:  # add function calls here
-             
-			account_type = ""
-			while (account_type != "1" and account_type != "2" and account_type != "3"):
-				print "Please select what type of account to create:\n\n"
-				print "1. Checking"
-				print "2. Savings"
-				print "3. Cancel"
-				account_type = raw_input()
-			if(account_type == "3"):
-				user_home(username)
-			elif(account_type == "1"):
-				account_type = "C"
-			elif(account_type == "2"):
-				account_type = "S"	
-			account_num = login.create_user_account(username, account_type)
-			print "New account created! Account number: "+str(account_num)
-			
+            account_type = ""
+            while account_type != "1" and account_type != "2" and account_type != "3":
+                print "Please select what type of account to create:\n\n"
+                print "1. Checking"
+                print "2. Savings"
+                print "3. Cancel"
+                account_type = raw_input()
+            if account_type == "3":
+                user_home(username)
+            elif account_type == "1":
+                account_type = "C"
+            elif account_type == "2":
+                account_type = "S"
+            account_num = login.create_user_account(username, account_type)
+            print "New account created! Account number: "+str(account_num)
         elif selection == 5:  # add function calls here
             print "Please verify your username and password"
             user_username = raw_input("Please enter your username:  ")
@@ -742,7 +739,6 @@ def user_home(username):
             else:
                 new_username = raw_input("Change username to: ")
                 transactions.change_username(user_username, new_username)
-				
         elif selection == 6:
             print "Please verify your username and password"
             user_username = raw_input("Please enter your username:  ")
@@ -759,7 +755,6 @@ def user_home(username):
                         old_user()
             else:
                 transactions.change_user_password(username)
-				
         elif selection == 7:
             home_screen()
 
